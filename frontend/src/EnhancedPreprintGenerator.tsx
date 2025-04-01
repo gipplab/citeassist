@@ -19,6 +19,7 @@ import {InfoIcon, RefreshCw, Wifi, WifiOff} from "lucide-react";
 import {Alert, AlertDescription} from "./components/ui/Alert";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
+import { Link } from 'react-router-dom';
 
 const backendURL = process.env.REACT_APP_BACKEND_URL || config.backend_url;
 
@@ -160,7 +161,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                 <Card className="w-1/2 min-w-fit mx-auto bg-white shadow-2xl border border-indigo-100">
                     <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-t-lg">
                         <CardTitle className="font-bold text-center text-white">
-                            <h1 className="text-3xl"><a href="/">CiteAssist</a></h1>
+                            <h1 className="text-3xl"><Link to="/">CiteAssist</Link></h1>
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
@@ -239,23 +240,21 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                 View on GitHub
                             </a>
                             <a
-                                href="https://arxiv.org/abs/2407.03192"
+                                href="https://aclanthology.org/2024.sdp-1.10/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-2 hover:text-indigo-600 transition-colors"
                             >
                                 <ArticleIcon/>
-                                View on arXiv
+                                View on ACL Anthology
                             </a>
-                            <a
-                                href="/impressum"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                to="/impressum"
                                 className="flex items-center gap-2 hover:text-indigo-600 transition-colors"
                             >
                                 <InfoIcon/>
                                 Impressum
-                            </a>
+                            </Link>
 
                         </div>
                     </CardFooter>

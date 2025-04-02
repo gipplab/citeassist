@@ -27,7 +27,7 @@ COPY --from=build /app/build /usr/share/nginx/html
 # Overwrite the default Nginx config
 RUN printf 'server {\n\
     listen 80;\n\
-    server_name preprint.larskaesberg.de;\n\
+    server_name citeassist.uni-goettingen.de;\n\
     root /usr/share/nginx/html;\n\
     index index.html;\n\
     location / {\n\

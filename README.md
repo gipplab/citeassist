@@ -17,7 +17,7 @@
   </p>
 </p>
 
-### [Try it yourself!](https://preprint.larskaesberg.de/)
+### [Try it yourself!](https://citeassist.uni-goettingen.de/)
 
 CiteAssist is a powerful tool that allows users to generate preprints with suggested related papers and add a BibTeX annotation to the PDF.
 

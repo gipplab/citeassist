@@ -20,7 +20,7 @@ authors:
     given-names: Bela
 identifiers:
   - type: url
-    value: 'https://preprint.larskaesberg.de'
+    value: 'https://citeassist.uni-goettingen.de'
     description: Tool
   - type: url
     value: 'https://arxiv.org/abs/2407.03192'

@@ -1,4 +1,16 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
-Disallow: /preprint
-Disallow: /impressum
+Allow: /
+
+# Allow Google and other major crawlers to access everything
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: Slurp
+Allow: /
+User-agent: DuckDuckBot
+Allow: /
+
+# Add Sitemap for better indexing
+Sitemap: https://citeassist.org/sitemap.xml

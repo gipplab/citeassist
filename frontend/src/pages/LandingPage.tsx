@@ -133,6 +133,14 @@ const LandingPage = () => {
                     <InfoIcon size={20} />
                     <span>Impressum</span>
                 </Link>
+                <Link
+                    to="/app"
+                    className="flex items-center gap-2 ml-4 px-4 py-1 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+                    aria-label="Go directly to the app"
+                >
+                    <ArrowRight size={18} />
+                    <span>Go to App</span>
+                </Link>
             </nav>
             
             <main className="flex-grow flex items-center justify-center p-4">
@@ -158,6 +166,18 @@ const LandingPage = () => {
                                     the first page for easy access. The system also suggests related papers based on keywords, 
                                     enhancing your research workflow through our free web interface.
                                 </p>
+                                <div className="mt-4 mb-6">
+                                    <a 
+                                        href="https://citeassist.uni-goettingen.de/preprint/c71f13ef-6653-4018-ae6a-f63d4ed53131"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium hover:underline"
+                                    >
+                                        <Book size={18} />
+                                        <span>View Example Result</span>
+                                        <ArrowRight size={16} />
+                                    </a>
+                                </div>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
                                     <div className="p-4 border border-gray-200 rounded-lg">
                                         <div className="flex flex-col items-center text-center">
@@ -194,6 +214,32 @@ const LandingPage = () => {
                                     <li>Generate either LaTeX files or a new annotated PDF with embedded citations</li>
                                 </ul>
                                 <div className="mt-4">
+                                    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+                                        <h3 className="text-xl font-medium text-gray-800 mb-3">Result Options</h3>
+                                        <div className="flex flex-col md:flex-row gap-4">
+                                            <div className="flex-1">
+                                                <p className="text-gray-600 mb-3">After processing, you have two options:</p>
+                                                <ol className="list-decimal list-inside mt-2 space-y-3 text-gray-700">
+                                                    <li>
+                                                        <span className="font-medium">Upload option:</span> If you choose to upload, 
+                                                        you'll get a <a 
+                                                            href="https://citeassist.uni-goettingen.de/preprint/c71f13ef-6653-4018-ae6a-f63d4ed53131" 
+                                                            target="_blank" 
+                                                            rel="noopener noreferrer"
+                                                            className="text-blue-600 hover:text-blue-800 hover:underline"
+                                                        >webpage like this example</a> with your annotated PDF
+                                                    </li>
+                                                    <li>
+                                                        <span className="font-medium">Download only:</span> If you prefer, you can just download the 
+                                                        annotated PDF with the embedded citations without saving it on our servers
+                                                    </li>
+                                                </ol>
+                                                <p className="mt-4 text-sm text-gray-600">
+                                                    Either way, your PDF will have BibTeX citations attached at the end and linked on the first page.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </section>
                         </div>

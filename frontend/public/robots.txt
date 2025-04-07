@@ -13,4 +13,4 @@ User-agent: DuckDuckBot
 Allow: /
 
 # Add Sitemap for better indexing
-Sitemap: https://citeassist.org/sitemap.xml
+Sitemap: https://citeassist.uni-goettingen.de/sitemap.xml

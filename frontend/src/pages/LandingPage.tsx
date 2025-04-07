@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
@@ -7,101 +7,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
 
 const LandingPage = () => {
-    // JSON-LD structured data for better SEO
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "CiteAssist",
-        "applicationCategory": "ResearchTool",
-        "operatingSystem": "Web",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-        },
-        "description": "CiteAssist is a system to automate the generation of BibTeX entries for preprints, streamlining the process of bibliographic annotation.",
-        "creator": {
-            "@type": "Organization",
-            "name": "University of Göttingen"
-        }
-    };
-
-    // Set up SEO metadata
-    useEffect(() => {
-        // Update document title
-        document.title = "CiteAssist - Automated Academic Citation Tool | BibTeX Generator for Researchers";
-        
-        // Set meta description
-        let metaDescription = document.querySelector('meta[name="description"]');
-        if (!metaDescription) {
-            metaDescription = document.createElement('meta');
-            metaDescription.setAttribute('name', 'description');
-            document.head.appendChild(metaDescription);
-        }
-        metaDescription.setAttribute('content', 'CiteAssist helps you manage academic papers by extracting metadata, generating BibTeX entries, and finding related papers - perfect for researchers and academics.');
-        
-        // Set meta keywords
-        let metaKeywords = document.querySelector('meta[name="keywords"]');
-        if (!metaKeywords) {
-            metaKeywords = document.createElement('meta');
-            metaKeywords.setAttribute('name', 'keywords');
-            document.head.appendChild(metaKeywords);
-        }
-        metaKeywords.setAttribute('content', 'BibTeX, citation, academic papers, preprints, research tools, pdf annotation, citation management');
-        
-        // Set Open Graph tags
-        let ogTitle = document.querySelector('meta[property="og:title"]');
-        if (!ogTitle) {
-            ogTitle = document.createElement('meta');
-            ogTitle.setAttribute('property', 'og:title');
-            document.head.appendChild(ogTitle);
-        }
-        ogTitle.setAttribute('content', 'CiteAssist - Automated Academic Citation Tool | BibTeX Generator for Researchers');
-        
-        let ogDescription = document.querySelector('meta[property="og:description"]');
-        if (!ogDescription) {
-            ogDescription = document.createElement('meta');
-            ogDescription.setAttribute('property', 'og:description');
-            document.head.appendChild(ogDescription);
-        }
-        ogDescription.setAttribute('content', 'Streamline your academic paper workflow with automatic metadata extraction and BibTeX generation.');
-        
-        let ogType = document.querySelector('meta[property="og:type"]');
-        if (!ogType) {
-            ogType = document.createElement('meta');
-            ogType.setAttribute('property', 'og:type');
-            document.head.appendChild(ogType);
-        }
-        ogType.setAttribute('content', 'website');
-        
-        // Add JSON-LD structured data
-        let script = document.querySelector('script[type="application/ld+json"]');
-        if (!script) {
-            script = document.createElement('script');
-            script.setAttribute('type', 'application/ld+json');
-            document.head.appendChild(script);
-        }
-        script.textContent = JSON.stringify(structuredData);
-        
-        // Set canonical link
-        let link = document.querySelector('link[rel="canonical"]');
-        if (!link) {
-            link = document.createElement('link');
-            link.setAttribute('rel', 'canonical');
-            document.head.appendChild(link);
-        }
-        link.setAttribute('href', window.location.href);
-        
-        // Clean up on unmount
-        return () => {
-            // Optional: Remove added elements on unmount if desired
-        };
-    }, []);
-
     return (
         <div className="min-h-screen flex flex-col">
             <header className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 font-medium shadow-md">
-                This is a free non-commercial service provided by the University of Göttingen.
+                This is a free non-commercial service provided by the <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/80 transition-colors">University of Göttingen</a>.
             </header>
             
             <nav className="bg-gray-50 py-2 px-4 flex justify-center gap-4 shadow-sm">

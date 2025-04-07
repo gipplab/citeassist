@@ -68,7 +68,7 @@ const PreprintViewer = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
             <header className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 font-medium shadow-md">
-                This is a free non-commercial service provided by the University of Göttingen.
+                This is a free non-commercial service provided by the <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/80 transition-colors">University of Göttingen</a>.
             </header>
             
             <main className="flex-grow container mx-auto py-8 px-4">

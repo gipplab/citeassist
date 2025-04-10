@@ -17,7 +17,7 @@
   </p>
 </p>
 
-### [Try it yourself!](https://citeassist.uni-goettingen.de/)
+Try <a href="https://citeassist.uni-goettingen.de/" title="CiteAssist" alt="cite assist tool">CiteAssist</a>!
 
 CiteAssist is a powerful tool that allows users to generate preprints with suggested related papers and add a BibTeX annotation to the PDF.
 

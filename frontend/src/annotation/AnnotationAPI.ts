@@ -11,12 +11,19 @@ export interface RelatedPaperInfo {
 
 export function relatedPaperToString(paper: RelatedPaperInfo) {
     let result = ""
-    if (paper.author) {
-        result += paper.author + ". "
+    // Only add first author. They are separated by commas. if there are multiple add "et al."
+    let authors = paper.author?.split(",")
+    if (authors && authors.length > 1) {
+        result += authors[0] + " et al. "
+    } else if (authors && authors.length == 1) {
+        result += authors[0] + ". "
+    } else {
+        result += "Unknown author. "
     }
-    result += paper.title + ". "
     if (paper.url) {
-        result += paper.url + ". "
+        result += String.raw`\href{${paper.url}}{${paper.title}}` + ". "
+    }else {
+        result += paper.title + ". "
     }
     if (paper.doi) {
         result += paper.doi + ". "

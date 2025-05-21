@@ -615,6 +615,15 @@ export function PDFInfoForm(props: {
 
             <TabsContent value="generate">
                 <div className="space-y-6">
+                    {(artTypeError || artRefError || artAuthorError || artTitleError) && (
+                        <Alert variant="destructive">
+                            <AlertTriangle className="h-4 w-4" />
+                            <AlertTitle>Error</AlertTitle>
+                            <AlertDescription>
+                                There are required fields that need to be filled in. Please check the Basic Info tab.
+                            </AlertDescription>
+                        </Alert>
+                    )}
                     <div>
                         <Label className="text-base">Select Output Format</Label>
                         <RadioGroup value={generationType} onValueChange={setGenerationType}

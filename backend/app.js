@@ -9,6 +9,7 @@ const usersRouter = require('./routes/users');
 const testAPIRouter = require("./routes/testAPI");
 const databaseRouter = require("./routes/database");
 const extractRouter = require("./routes/extract");
+const latexRouter = require("./routes/latex");
 const bodyParser = require('body-parser');
 const config = require("./config.json");
 
@@ -18,6 +19,8 @@ const app = express();
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+// Add raw body handling for plain text
+app.use(bodyParser.text({limit: '50mb', type: 'text/plain'}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -42,7 +45,7 @@ app.use('/users', usersRouter);
 app.use("/testAPI", testAPIRouter);
 app.use("/database", databaseRouter);
 app.use("/extract", extractRouter);
-
+app.use("/latex", latexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

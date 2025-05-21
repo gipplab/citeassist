@@ -14,9 +14,18 @@ function downloadFileFromText(content: string, filename: string): void {
     document.body.removeChild(downloadLink);
 }
 
-export function downloadLatexFiles(annotation: string, link: string, conferenceAcronym: string | null, relatedPapers: string[], onlineLink: boolean = true): void {
+export function downloadLatexFiles(annotation: string, link: string, conferenceAcronym: string | null, relatedPapers: string[]): void {
     const styText = generateLatexSty(conferenceAcronym);
-    const texText = generateLatexTex(annotation, link, relatedPapers, onlineLink);
+    
+    // Get the basic TeX content
+    const basicTexContent = generateLatexTex(annotation, link, relatedPapers);
+    const texText = String.raw`
+\clearpage
+\hypertarget{annotation}{}
+\pagestyle{empty}
+${basicTexContent}
+`;
+    
     const mdText = latexMD;
 
     const zip = new JSZip();

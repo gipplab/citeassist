@@ -31,8 +31,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.dev # Assuming a Dockerfile.dev with development-specific settings
-      args:
-        REACT_APP_BACKEND_URL: http://localhost:9000
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:9000
     volumes:
       - ./frontend:/app # For live-reloading
       - /app/node_modules
@@ -46,3 +46,8 @@ services:
     ports:
       - "8070:8070"
       - "8071:8071"
+
+  latex-render:
+    image: vsfexperts/latex-render-server
+    ports:
+      - "8080:8080"

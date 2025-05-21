@@ -13,8 +13,6 @@ RUN npm install
 # Copy the rest of your application's code
 COPY . .
 
-ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL $REACT_APP_BACKEND_URL
 # Build your app
 RUN npm run build
 
@@ -23,6 +21,15 @@ FROM nginx:alpine
 
 # Copy the build output to replace the default nginx contents.
 COPY --from=build /app/build /usr/share/nginx/html
+
+# Create entrypoint script properly
+RUN echo '#!/bin/sh' > /docker-entrypoint.sh && \
+    echo '# Generate runtime environment configuration' >> /docker-entrypoint.sh && \
+    echo 'echo "window.ENV = {" > /usr/share/nginx/html/env-config.js' >> /docker-entrypoint.sh && \
+    echo 'echo "  REACT_APP_BACKEND_URL: '\''$REACT_APP_BACKEND_URL'\''" >> /usr/share/nginx/html/env-config.js' >> /docker-entrypoint.sh && \
+    echo 'echo "};" >> /usr/share/nginx/html/env-config.js' >> /docker-entrypoint.sh && \
+    echo 'exec "$@"' >> /docker-entrypoint.sh && \
+    chmod +x /docker-entrypoint.sh
 
 # Overwrite the default Nginx config
 RUN printf 'server {\n\
@@ -35,8 +42,9 @@ RUN printf 'server {\n\
     }\n\
 }' > /etc/nginx/conf.d/default.conf
 
-# Expose port 80 to the Docker host, so we can access it 
-# from the outside.
+# Expose port 80 to the Docker host
 EXPOSE 80
 
-# No need for CMD because using nginx's default command
+# Use our custom entrypoint script
+ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["nginx", "-g", "daemon off;"]

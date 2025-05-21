@@ -1,8 +1,8 @@
 import {PDFDocument} from "pdf-lib";
 import {extractKeywords} from "../languageProcessing/ExtractKeywords";
-import config from "../config.json";
+import { env } from '../config';
 
-const backendURL = process.env.REACT_APP_BACKEND_URL || config.backend_url;
+const backendURL = env.BACKEND_URL;
 
 export interface PDFFile {
     name: string;

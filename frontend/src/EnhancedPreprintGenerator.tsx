@@ -8,20 +8,20 @@ import {PDFFileUploader} from "./pdf/PDFFileUploader";
 import {PDFInfoForm} from "./pdf/PDFInfoForm";
 import {RelatedPaperInfo, relatedPaperToString} from "./annotation/AnnotationAPI"
 import {v4 as uuidv4} from 'uuid';
-import config from "./config.json"
-import {downloadLatexFiles} from "./latex/GenerateLatexFiles";
-import {
-    Button,
-    CircularProgress
-} from "@mui/material";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "./components/ui/Card";
 import {InfoIcon, RefreshCw, Wifi, WifiOff} from "lucide-react";
 import {Alert, AlertDescription} from "./components/ui/Alert";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
 import { Link } from 'react-router-dom';
+import { env } from './config';
+import {downloadLatexFiles} from "./latex/GenerateLatexFiles";
+import {
+    Button,
+    CircularProgress
+} from "@mui/material";
 
-const backendURL = process.env.REACT_APP_BACKEND_URL || config.backend_url;
+const backendURL = env.BACKEND_URL;
 
 const PDFJS = window.pdfjsLib;
 
@@ -308,8 +308,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             this.state.file!.file,
             uuid,
             bibTexEntries,
-            similarPreprints,
-            upload
+            similarPreprints
         )
         const baseUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port) ? ":" : ""}${window.location.port}`;
         const url = `${baseUrl}/preprint/${uuid}`;
@@ -327,7 +326,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             })
         }
         if (latex) {
-            downloadLatexFiles(text, bibTexEntries.url || url, bibTexEntries.confacronym, similarPreprints.map((preprint) => relatedPaperToString(preprint)), upload)
+            downloadLatexFiles(text, bibTexEntries.url || url, bibTexEntries.confacronym, similarPreprints.map((preprint) => relatedPaperToString(preprint)))
         } else {
             saveByteArray(this.state.file!.name, bytes);
         }

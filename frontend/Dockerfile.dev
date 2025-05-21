@@ -13,11 +13,18 @@ RUN npm install
 # Copy the rest
 COPY . .
 
+# Create script to generate runtime config properly
+RUN echo '#!/bin/sh' > /entrypoint.sh && \
+    echo '# Generate runtime environment configuration' >> /entrypoint.sh && \
+    echo 'echo "window.ENV = {" > /app/public/env-config.js' >> /entrypoint.sh && \
+    echo 'echo "  REACT_APP_BACKEND_URL: '\''$REACT_APP_BACKEND_URL'\''" >> /app/public/env-config.js' >> /entrypoint.sh && \
+    echo 'echo "};" >> /app/public/env-config.js' >> /entrypoint.sh && \
+    echo 'exec "$@"' >> /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
 # Expose the port used by the development server
 EXPOSE 3000
 
-ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL $REACT_APP_BACKEND_URL
-
 # Start the development server
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["npm", "run", "start-docker"]

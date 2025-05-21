@@ -30,8 +30,8 @@ services:
   frontend:
     build:
       context: ./frontend
-      args:
-        REACT_APP_BACKEND_URL: http://localhost:9000
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:9000
     ports:
       - "3000:80"
     depends_on:
@@ -39,6 +39,13 @@ services:
 
   grobid:
     image: lfoppiano/grobid:0.8.0
+    
+  latex-render:
+    image: vsfexperts/latex-render-server
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
 
 volumes:
   postgres_data:

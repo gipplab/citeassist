@@ -2,15 +2,15 @@ import React, {useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
 import {Container, Grid, Paper, Typography, Box, Button, useTheme, useMediaQuery} from '@mui/material';
 import {ArrowLeft, Copy as CopyIcon, FileText} from 'lucide-react';
-import config from "../config.json";
 import '../EnhancedPreprintGenerator.css';
 import {EnhancedPreprintGeneratorAppBar} from "../EnhancedPreprintGeneratorAppBar";
 import {ThemeProvider} from "@mui/material/styles";
 import darkTheme from "../theme";
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "../components/ui/Card";
 import GitHubIcon from "@mui/icons-material/GitHub"; // Assuming this CSS file has your styling
+import { env } from '../config';
 
-const backendURL = process.env.REACT_APP_BACKEND_URL || config.backend_url;
+const backendURL = env.BACKEND_URL;
 
 interface Preprint {
     title: string;

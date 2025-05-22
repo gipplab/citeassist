@@ -3,6 +3,7 @@ version: '3.8'
 services:
   db:
     image: postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: preprint_db
       POSTGRES_USER: preprint
@@ -12,6 +13,7 @@ services:
 
   backend:
     image: ghcr.io/gipplab/citeassist/backend:main
+    restart: unless-stopped
     command: ["sh", "-c", "until nc -z db 5432; do echo 'Waiting for database...'; sleep 2; done; echo 'Database ready!'; npm start"]
     environment:
       - DATABASE_USER=preprint
@@ -29,6 +31,7 @@ services:
 
   frontend:
     image: ghcr.io/gipplab/citeassist/frontend:main
+    restart: unless-stopped
     environment:
       - REACT_APP_BACKEND_URL=http://localhost:9000
     ports:
@@ -38,9 +41,11 @@ services:
 
   grobid:
     image: lfoppiano/grobid:0.8.0
+    restart: unless-stopped
     
   latex-render:
     image: vsfexperts/latex-render-server
+    restart: unless-stopped
     ports:
       - "8080:8080"
     depends_on:

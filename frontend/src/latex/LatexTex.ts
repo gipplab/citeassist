@@ -50,7 +50,7 @@ ${link ? String.raw`\textbf{\sffamily Official Publication} &
 ${(link && citeAssistLink) ? String.raw`` : ''}
 ${citeAssistLink ? String.raw`\textbf{\sffamily CiteAssist} & 
 \begin{minipage}[t]{0.72\textwidth}
-\href{${citeAssistLink}}{\color{Primary}\url{${citeAssistLink}}}
+\href{${citeAssistLink}}{\color{Primary}${citeAssistLink}}
 \end{minipage}\\` : ''}
 \end{tabular}
 

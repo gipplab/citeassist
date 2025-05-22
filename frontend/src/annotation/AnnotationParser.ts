@@ -20,7 +20,7 @@ const transformParsedData = (entries: Entry[]): BibTexEntry[] | null => {
             name: key,
             tag: key,
             default: true,
-            value: value.join(", "),
+            value: value.join(" and "),
         };
     });
     newEntries.push({

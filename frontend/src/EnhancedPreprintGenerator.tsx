@@ -325,7 +325,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                 bibTexEntries,
                 similarPreprints
             )
-            const baseUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port) ? ":" : ""}${window.location.port}`;
+            const baseUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port.length > 0) ? ":" : ""}${window.location.port}`;
             const url = upload ? `${baseUrl}/preprint/${uuid}` : undefined;
             if (upload) {
                 await this.storePreprint({

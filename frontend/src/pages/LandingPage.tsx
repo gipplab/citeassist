@@ -1,12 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
-import { ArrowRight, Info as InfoIcon, FileText, Coffee, Book, Users } from 'lucide-react';
+import { ArrowRight, Info as InfoIcon, FileText, Coffee, Book, Users, Quote, Clipboard, Check } from 'lucide-react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
 
 const LandingPage = () => {
+    const [copySuccess, setCopySuccess] = useState(false);
+    
+    const citationText = `@inproceedings{kaesberg-etal-2024-citeassist,
+  author={Kaesberg, Lars and Ruas, Terry and Wahle, Jan Philip and Gipp, Bela},
+  title={{C}ite{A}ssist: A System for Automated Preprint Citation and {B}ib{T}e{X} Generation},
+  address={Bangkok, Thailand},
+  booktitle={Proceedings of the Fourth Workshop on Scholarly Document Processing (SDP 2024)},
+  editor={Ghosal, Tirthankar and Singh, Amanpreet and Waard, Anita and Mayr, Philipp and Naik, Aakanksha and Weller, Orion and Lee, Yoonjoo and Shen, Shannon and Qin, Yanxia},
+  pages={105--119},
+  publisher={Association for Computational Linguistics},
+  url={https://aclanthology.org/2024.sdp-1.10/},
+  year={2024},
+  month={08}
+}`;
+
+    const handleCopyClick = async () => {
+        try {
+            await navigator.clipboard.writeText(citationText);
+            setCopySuccess(true);
+            setTimeout(() => setCopySuccess(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    };
+
     return (
         <div className="min-h-screen flex flex-col">
             <header className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 font-medium shadow-md">
@@ -77,7 +102,7 @@ const LandingPage = () => {
                                 </p>
                                 <div className="mt-4 mb-6">
                                     <a 
-                                        href="https://citeassist.uni-goettingen.de/preprint/c71f13ef-6653-4018-ae6a-f63d4ed53131"
+                                        href="https://citeassist.uni-goettingen.de/preprint/455b4527-da96-4c79-a434-18bc65646d3b"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium hover:underline"
@@ -132,7 +157,7 @@ const LandingPage = () => {
                                                     <li>
                                                         <span className="font-medium">Upload option:</span> If you choose to upload, 
                                                         you'll get a <a 
-                                                            href="https://citeassist.uni-goettingen.de/preprint/c71f13ef-6653-4018-ae6a-f63d4ed53131" 
+                                                            href="https://citeassist.uni-goettingen.de/preprint/455b4527-da96-4c79-a434-18bc65646d3b" 
                                                             target="_blank" 
                                                             rel="noopener noreferrer"
                                                             className="text-blue-600 hover:text-blue-800 hover:underline"
@@ -149,6 +174,38 @@ const LandingPage = () => {
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </section>
+
+                            <section id="citation">
+                                <h2 className="text-2xl font-semibold text-gray-800 mb-3 flex items-center">
+                                    <Quote size={20} className="mr-2 text-indigo-600" />
+                                    Citation
+                                </h2>
+                                <div className="bg-gray-50 border border-gray-200 rounded-lg p-5">
+                                    <div className="flex justify-between items-center mb-3">
+                                        <p className="text-gray-700 font-medium">If you use this tool, please cite it:</p>
+                                        <button
+                                            onClick={handleCopyClick}
+                                            className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-md transition-colors text-sm font-medium"
+                                            aria-label="Copy citation to clipboard"
+                                        >
+                                            {copySuccess ? (
+                                                <>
+                                                    <Check size={16} />
+                                                    <span>Copied!</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Clipboard size={16} />
+                                                    <span>Copy to Clipboard</span>
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
+                                    <pre className="bg-white p-4 rounded border border-gray-200 text-sm overflow-x-auto font-mono text-gray-800">
+{citationText}
+                                    </pre>
                                 </div>
                             </section>
                         </div>

@@ -23,7 +23,7 @@ async function createCitationPDFWithLatex(uuid: string | undefined, size: { widt
     bibAnnotationText += "\n}"
 
     // Generate link URL
-    const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
+    const baseUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port.length > 0) ? ":" : ""}${window.location.port}`;
     const url = uuid ? `${baseUrl}/preprint/${uuid}` : undefined;
 
     // Get related papers as strings

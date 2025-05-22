@@ -11,7 +11,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    build: ./backend
+    image: ghcr.io/gipplab/citeassist/backend:main
     command: ["sh", "-c", "until nc -z db 5432; do echo 'Waiting for database...'; sleep 2; done; echo 'Database ready!'; npm start"]
     environment:
       - DATABASE_USER=preprint
@@ -28,8 +28,7 @@ services:
       - db
 
   frontend:
-    build:
-      context: ./frontend
+    image: ghcr.io/gipplab/citeassist/frontend:main
     environment:
       - REACT_APP_BACKEND_URL=http://localhost:9000
     ports:

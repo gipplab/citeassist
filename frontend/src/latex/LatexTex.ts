@@ -62,7 +62,8 @@ ${citeAssistLink ? String.raw`\textbf{\sffamily CiteAssist} &
   basicstyle=\footnotesize\ttfamily,
   breaklines=true,
   breakatwhitespace=false,
-  columns=flexible
+  columns=flexible,
+  numbers=none
 }
 
 % --------- Define simplified color palette ---------

@@ -36,6 +36,7 @@ interface AppState {
     bibTexEntries: { [p: string]: string };
     keywords: string[];
     similarPreprints: RelatedPaperInfo[];
+    pdfGenerating: boolean;
 }
 
 
@@ -104,7 +105,8 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             latex: false,
             bibTexEntries: {},
             keywords: [],
-            similarPreprints: []
+            similarPreprints: [],
+            pdfGenerating: false
         };
     }
 
@@ -184,6 +186,16 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             <header className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 font-medium shadow-md">
                 This is a free non-commercial service provided by the <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/80 transition-colors">University of Göttingen</a>.
             </header>
+
+                {this.state.pdfGenerating && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                        <div className="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center">
+                            <CircularProgress size={60} />
+                            <h3 className="mt-4 text-xl font-medium text-gray-800">Generating PDF...</h3>
+                            <p className="mt-2 text-gray-600">This may take a few moments</p>
+                        </div>
+                    </div>
+                )}
 
                 <div className="min-h-screen flex items-center justify-center overflow-y-auto py-8">
                     <Card className="w-full max-w-4xl mx-auto bg-white shadow-2xl border border-indigo-100">
@@ -296,7 +308,8 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
     private async OnGeneration(bibTexEntries: {
         [p: string]: string
     }, keywords: string[], similarPreprints: RelatedPaperInfo[], latex = false, upload = false) {
-        // Fix for error in the PDF-LIB library
+        this.setState({ pdfGenerating: true });
+        
         try {
             this.state.file!.file.getCreationDate()
         } catch (e) {
@@ -304,39 +317,46 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
         }
         const fileBackup = await this.state.file!.file.copy()
         const uuid = uuidv4()
-        const {text, bytes} = await createBibTexAnnotation(
-            this.state.file!.file,
-            upload ? uuid : undefined,
-            bibTexEntries,
-            similarPreprints
-        )
-        const baseUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port) ? ":" : ""}${window.location.port}`;
-        const url = upload ? `${baseUrl}/preprint/${uuid}` : undefined;
-        if (upload) {
-            await this.storePreprint({
-                title: bibTexEntries["title"],
-                keywords: keywords,
-                doi: bibTexEntries["doi"],
-                author: bibTexEntries["author"],
-                url: bibTexEntries["url"] || url,
-                year: bibTexEntries["year"],
-                annotation: text,
-                file: this.state.file,
-                uuid: uuid
-            })
-        }
-        if (latex) {
-            downloadLatexFiles(text, bibTexEntries.url, url, bibTexEntries.confacronym, similarPreprints.map((preprint) => relatedPaperToString(preprint)))
-        } else {
-            saveByteArray(this.state.file!.name, bytes);
-        }
-        this.setState({
-            file: {
-                file: fileBackup,
-                info: this.state.file!.info,
-                name: this.state.file!.name,
+        
+        try {
+            const {text, bytes} = await createBibTexAnnotation(
+                this.state.file!.file,
+                upload ? uuid : undefined,
+                bibTexEntries,
+                similarPreprints
+            )
+            const baseUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port) ? ":" : ""}${window.location.port}`;
+            const url = upload ? `${baseUrl}/preprint/${uuid}` : undefined;
+            if (upload) {
+                await this.storePreprint({
+                    title: bibTexEntries["title"],
+                    keywords: keywords,
+                    doi: bibTexEntries["doi"],
+                    author: bibTexEntries["author"],
+                    url: bibTexEntries["url"] || url,
+                    year: bibTexEntries["year"],
+                    annotation: text,
+                    file: this.state.file,
+                    uuid: uuid
+                })
             }
-        })
+            if (latex) {
+                downloadLatexFiles(text, bibTexEntries.url, url, bibTexEntries.confacronym, similarPreprints.map((preprint) => relatedPaperToString(preprint)))
+            } else {
+                saveByteArray(this.state.file!.name, bytes);
+            }
+        } catch (error) {
+            console.error("Error generating PDF:", error);
+        } finally {
+            this.setState({
+                pdfGenerating: false,
+                file: {
+                    file: fileBackup,
+                    info: this.state.file!.info,
+                    name: this.state.file!.name,
+                }
+            });
+        }
     };
 
 }

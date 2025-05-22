@@ -18,6 +18,7 @@ import "../output.css"
 import {Separator} from "../components/ui/Seperator";
 import {parseBibTex} from "../annotation/AnnotationParser";
 import {useMediaQuery} from "react-responsive";
+import {CircularProgress} from "@mui/material";
 
 // const Transition = React.forwardRef(function Transition(
 //     props: TransitionProps & {
@@ -118,6 +119,9 @@ export function PDFInfoForm(props: {
     const [arxivInput, setArxivInput] = useState('');
     const [bibtexInput, setBibtexInput] = useState('');
 
+    const [isLoadingRelatedPapers, setIsLoadingRelatedPapers] = useState(false);
+    const [isLoadingArxivPaper, setIsLoadingArxivPaper] = useState(false);
+
     function handleSubmit(upload: boolean) {
         const bibTexEntries: { [id: string]: string } = {}
         bibTexEntries["artType"] = artType
@@ -207,47 +211,61 @@ export function PDFInfoForm(props: {
     };
 
     const loadRelatedPapers = async () => {
-        // This is a placeholder function. In a real application, you would fetch related papers based on keywords.
-        console.log("Loading related papers based on keywords:", keywords);
-        const loadedRelatedPapers = await requestPreprints("", keywords)
-        setSimilarPapers(loadedRelatedPapers || [])
+        setIsLoadingRelatedPapers(true);
+        try {
+            console.log("Loading related papers based on keywords:", keywords);
+            const loadedRelatedPapers = await requestPreprints("", keywords)
+            setSimilarPapers(loadedRelatedPapers || [])
+        } catch (error) {
+            console.error("Error loading related papers:", error);
+        } finally {
+            setIsLoadingRelatedPapers(false);
+        }
     };
 
     const addRelatedPaper = async () => {
-        // This is a placeholder function. In a real application, you would fetch the paper details from the arXiv API.
-        const doiPaper = await doi2bib(arxivInput)
-        if (doiPaper !== null) {
-            const newPaper = {
-                title: doiPaper.title,
-                author: doiPaper.author,
-                year: doiPaper.year,
-                url: doiPaper.url,
-                doi: doiPaper.doi
-            };
-            if (relatedPapers.map(paper => paper.title).indexOf(newPaper.title) !== -1) {
+        if (!arxivInput.trim()) return;
+        
+        setIsLoadingArxivPaper(true);
+        try {
+            const doiPaper = await doi2bib(arxivInput)
+            if (doiPaper !== null) {
+                const newPaper = {
+                    title: doiPaper.title,
+                    author: doiPaper.author,
+                    year: doiPaper.year,
+                    url: doiPaper.url,
+                    doi: doiPaper.doi
+                };
+                if (relatedPapers.map(paper => paper.title).indexOf(newPaper.title) !== -1) {
+                    setArxivInput('');
+                    return
+                }
+                setRelatedPapers([...relatedPapers, newPaper]);
                 setArxivInput('');
                 return
             }
-            setRelatedPapers([...relatedPapers, newPaper]);
-            setArxivInput('');
-            return
-        }
-        const arxivPaper = await arxivid2doi(arxivInput)
-        if (arxivPaper !== null) {
-            const newPaper = {
-                title: arxivPaper.title,
-                author: arxivPaper.author,
-                year: arxivPaper.year,
-                url: arxivPaper.url,
-                doi: arxivPaper.doi
-            };
-            if (relatedPapers.map(paper => paper.title).indexOf(newPaper.title) !== -1) {
+            const arxivPaper = await arxivid2doi(arxivInput)
+            if (arxivPaper !== null) {
+                const newPaper = {
+                    title: arxivPaper.title,
+                    author: arxivPaper.author,
+                    year: arxivPaper.year,
+                    url: arxivPaper.url,
+                    doi: arxivPaper.doi
+                };
+                if (relatedPapers.map(paper => paper.title).indexOf(newPaper.title) !== -1) {
+                    setArxivInput('');
+                    return
+                }
+                setRelatedPapers([...relatedPapers, newPaper]);
                 setArxivInput('');
                 return
             }
-            setRelatedPapers([...relatedPapers, newPaper]);
-            setArxivInput('');
-            return
+        } catch (error) {
+            console.error("Error adding paper:", error);
+        } finally {
+            setIsLoadingArxivPaper(false);
         }
     };
 
@@ -517,8 +535,15 @@ export function PDFInfoForm(props: {
                             />
                         ))}
                         <div className="mt-4 space-y-4">
-                            <Button onClick={loadRelatedPapers} className="w-full">
-                                Load Related Papers Based on Keywords
+                            <Button onClick={loadRelatedPapers} className="w-full" disabled={isLoadingRelatedPapers}>
+                                {isLoadingRelatedPapers ? (
+                                    <>
+                                        <CircularProgress size={16} className="mr-2" /> 
+                                        Loading Papers...
+                                    </>
+                                ) : (
+                                    "Load Related Papers Based on Keywords"
+                                )}
                             </Button>
                             <div className="flex items-center justify-center">
                                 <Separator className="w-96"/>
@@ -531,8 +556,17 @@ export function PDFInfoForm(props: {
                                     value={arxivInput}
                                     onChange={(e) => setArxivInput(e.target.value)}
                                 />
-                                <Button onClick={addRelatedPaper}>
-                                    <Plus className="h-4 w-4 mr-2"/> Add Paper
+                                <Button onClick={addRelatedPaper} disabled={isLoadingArxivPaper}>
+                                    {isLoadingArxivPaper ? (
+                                        <>
+                                            <CircularProgress size={16} className="mr-2" />
+                                            Searching...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Plus className="h-4 w-4 mr-2"/> Add Paper
+                                        </>
+                                    )}
                                 </Button>
                             </div>
                         </div>

@@ -38,7 +38,7 @@ ${acronym? String.raw`
     \tttextbf{${acronym}}
      };`:""}
   \end{tikzpicture}
-  \vspace{-1em}
+  \vspace{-2em}
 }
 
 

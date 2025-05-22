@@ -6,7 +6,6 @@ export interface RelatedPaperInfo {
     url?: string,
     doi?: string,
     year?: string
-
 }
 
 export function relatedPaperToString(paper: RelatedPaperInfo) {

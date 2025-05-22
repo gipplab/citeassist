@@ -12,6 +12,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.dev # Assuming you have a Dockerfile.dev with development-specific settings
+    command: ["sh", "-c", "until nc -z db 5432; do echo 'Waiting for database...'; sleep 2; done; echo 'Database ready!'; npm run dev"]
     volumes:
       - ./backend:/app # For live-reloading
       - /app/node_modules

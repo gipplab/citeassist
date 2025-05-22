@@ -1,4 +1,4 @@
-export function generateLatexTex(annotation: string, link: string, relatedPapers: string[]) {
+export function generateLatexTex(annotation: string, link: string | undefined, citeAssistLink: string | undefined, relatedPapers: string[]) {
     // Create related papers items
     let relatedPapersSection = '';
     if (relatedPapers && relatedPapers.length > 0) {
@@ -8,12 +8,12 @@ export function generateLatexTex(annotation: string, link: string, relatedPapers
 \begin{tcolorbox}[enhanced,
                  frame hidden,
                  boxrule=0pt,
-                 borderline west={2pt}{0pt}{RoyalBlue!70!black},
-                 colback=RoyalBlue!3!white,
+                 borderline west={2pt}{0pt}{Primary},
+                 colback=LightBg,
                  sharp corners,
                  breakable,
                  fonttitle=\sffamily\bfseries\large,
-                 coltitle=RoyalBlue!70!black,
+                 coltitle=Primary,
                  title=Related Papers,
                  attach title to upper={\vspace{0.2em}\par},
                  left=12pt]
@@ -24,63 +24,91 @@ ${relatedPapers.map((rel) => String.raw`  \item ${rel}`).join("\n")}
     }
 
     // Format online version section if needed
-    const onlineVersionSection = link ? String.raw`
+    const onlineVersionSection = (link || citeAssistLink) ? String.raw`
 % ------------- Online version link -------------
 \vspace{0.8em}
 \begin{tcolorbox}[enhanced,
                  frame hidden,
                  boxrule=0pt,
-                 borderline west={2pt}{0pt}{ForestGreen!70!black},
-                 colback=ForestGreen!3!white,
+                 borderline west={2pt}{0pt}{Primary},
+                 colback=LightBg,
                  sharp corners,
                  breakable,
                  fonttitle=\sffamily\bfseries\large,
-                 coltitle=ForestGreen!70!black,
-                 title=Online Version,
+                 coltitle=Primary,
+                 title=Online Access,
                  attach title to upper={\vspace{0.2em}\par},
                  left=12pt]
-\href{${link}}{\color{ForestGreen!80!black}\url{${link}}}
+
+% Two-column table for links
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{@{}p{0.25\textwidth}@{}p{0.75\textwidth}@{}}
+${link ? String.raw`\textbf{\sffamily Official Publication} & 
+\begin{minipage}[t]{0.72\textwidth}
+\href{${link}}{\color{Primary}\url{${link}}}
+\end{minipage}\\` : ''}
+${(link && citeAssistLink) ? String.raw`` : ''}
+${citeAssistLink ? String.raw`\textbf{\sffamily CiteAssist} & 
+\begin{minipage}[t]{0.72\textwidth}
+\href{${citeAssistLink}}{\color{Primary}\url{${citeAssistLink}}}
+\end{minipage}\\` : ''}
+\end{tabular}
+
 \end{tcolorbox}
 ` : '';
 
-    return String.raw`% --------- Stylish header with gold accent ---------
-\definecolor{Goldenrod}{RGB}{218,165,32}
-\definecolor{RoyalBlue}{RGB}{65,105,225}
-\definecolor{ForestGreen}{RGB}{34,139,34}
+    return String.raw`% --------- Required packages for formatting ---------
+\lstset{
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true,
+  breakatwhitespace=false,
+  columns=flexible
+}
+
+% --------- Define simplified color palette ---------
+% Core colors based on Tailwind blue-500
+\definecolor{Primary}{RGB}{59, 130, 246}    % Main blue color (Tailwind blue-500)
+\definecolor{PrimaryDark}{RGB}{30, 64, 175} % Darker blue for emphasis (Tailwind blue-800)
+\definecolor{LightBg}{RGB}{239, 246, 255}   % Very light blue background (Tailwind blue-50)
+\definecolor{TextDark}{RGB}{31, 41, 55}     % Dark text color (Tailwind gray-800)
+\definecolor{TextMuted}{RGB}{107, 114, 128} % Secondary text color (Tailwind gray-500)
+
+% --------- Header bar ---------
 \begin{tikzpicture}[remember picture, overlay]
-  \fill[Goldenrod!80] ([xshift=0cm,yshift=0cm]current page.north west) rectangle ([xshift=0.4cm,yshift=-3cm]current page.north west);
+  \fill[Primary] ([xshift=0cm,yshift=0cm]current page.north west) rectangle ([xshift=\paperwidth,yshift=-0.4cm]current page.north west);
 \end{tikzpicture}
 
+\vspace{0.8cm}
 \begin{center}
-  {\fontsize{22}{26}\selectfont\sffamily\bfseries \textcolor{Goldenrod!80!black}{CiteAssist}}\\[0.2em]
-  {\Large\sffamily\scshape \textcolor{black!80}{Citation Sheet}}\\[0.8em]
-  {\small\sffamily Generated with \href{https://citeassist.uni-goettingen.de/}{\textcolor{Goldenrod!90!black}{\texttt{citeassist.uni-goettingen.de}}}}
+  {\fontsize{22}{26}\selectfont\sffamily\bfseries \textcolor{PrimaryDark}{CiteAssist}}\\[0.2em]
+  {\Large\sffamily\scshape \textcolor{TextMuted}{Citation Sheet}}\\[0.8em]
+  {\small\sffamily Generated with \href{https://citeassist.uni-goettingen.de/}{\textcolor{Primary}{\texttt{citeassist.uni-goettingen.de}}}}
 \end{center}
 
-\vspace{0.5em}
+\begin{center}
+\vspace{1em}
 \begin{tikzpicture}
-\draw[Goldenrod!60, line width=0.6pt] (0,0) -- (\textwidth,0);
+\draw[Primary, line width=0.6pt] (0,0) -- (\textwidth,0);
 \end{tikzpicture}
 \vspace{1.2em}
+\end{center}
 
 % --------------  BibTeX block  -----------------
 \begin{tcolorbox}[enhanced,
                  frame hidden,
                  boxrule=0pt,
-                 borderline west={2pt}{0pt}{Goldenrod!80!black},
-                 colback=Goldenrod!2!white,
+                 borderline west={2pt}{0pt}{Primary},
+                 colback=LightBg,
                  sharp corners,
                  breakable,
                  fonttitle=\sffamily\bfseries\large,
-                 coltitle=Goldenrod!80!black,
+                 coltitle=Primary,
                  title=BibTeX Entry,
                  attach title to upper={\vspace{0.2em}\par},
                  left=12pt]
-{\footnotesize\ttfamily
-\begin{verbatim}
+\begin{lstlisting}
 ${annotation}
-\end{verbatim}
-}
+\end{lstlisting}
 \end{tcolorbox}
 
 ${onlineVersionSection}
@@ -89,9 +117,9 @@ ${relatedPapersSection}
 % ------ Footer with subtle design element ------
 \vfill
 \begin{tikzpicture}
-\draw[Goldenrod!40, line width=0.4pt] (0,0) -- (\textwidth,0);
+\draw[Primary!40, line width=0.4pt] (0,0) -- (\textwidth,0);
 \end{tikzpicture}
 \begin{center}
-\small\sffamily\textcolor{black!60}{Generated \today}
+\small\sffamily\textcolor{TextMuted}{Generated \today}
 \end{center}`;
 }

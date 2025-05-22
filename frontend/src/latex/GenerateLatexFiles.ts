@@ -14,11 +14,11 @@ function downloadFileFromText(content: string, filename: string): void {
     document.body.removeChild(downloadLink);
 }
 
-export function downloadLatexFiles(annotation: string, link: string, conferenceAcronym: string | null, relatedPapers: string[]): void {
+export function downloadLatexFiles(annotation: string, link: string | undefined, citeAssistLink: string | undefined, conferenceAcronym: string | null, relatedPapers: string[]): void {
     const styText = generateLatexSty(conferenceAcronym);
     
     // Get the basic TeX content
-    const basicTexContent = generateLatexTex(annotation, link, relatedPapers);
+    const basicTexContent = generateLatexTex(annotation, link, citeAssistLink, relatedPapers);
     const texText = String.raw`
 \clearpage
 \hypertarget{annotation}{}

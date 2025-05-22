@@ -306,12 +306,12 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
         const uuid = uuidv4()
         const {text, bytes} = await createBibTexAnnotation(
             this.state.file!.file,
-            uuid,
+            upload ? uuid : undefined,
             bibTexEntries,
             similarPreprints
         )
         const baseUrl = `${window.location.protocol}//${window.location.hostname}${(window.location.port) ? ":" : ""}${window.location.port}`;
-        const url = `${baseUrl}/preprint/${uuid}`;
+        const url = upload ? `${baseUrl}/preprint/${uuid}` : undefined;
         if (upload) {
             await this.storePreprint({
                 title: bibTexEntries["title"],
@@ -326,7 +326,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             })
         }
         if (latex) {
-            downloadLatexFiles(text, bibTexEntries.url || url, bibTexEntries.confacronym, similarPreprints.map((preprint) => relatedPaperToString(preprint)))
+            downloadLatexFiles(text, bibTexEntries.url, url, bibTexEntries.confacronym, similarPreprints.map((preprint) => relatedPaperToString(preprint)))
         } else {
             saveByteArray(this.state.file!.name, bytes);
         }

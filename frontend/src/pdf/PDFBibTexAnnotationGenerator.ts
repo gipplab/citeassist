@@ -7,7 +7,7 @@ import { generateLatexTex } from '../latex/LatexTex';
 
 const backendURL = env.BACKEND_URL;
 
-async function createCitationPDFWithLatex(uuid: string, size: { width: number, height: number }, bibTexEntries: {
+async function createCitationPDFWithLatex(uuid: string | undefined, size: { width: number, height: number }, bibTexEntries: {
     [id: string]: string
 }, similarPreprints?: RelatedPaperInfo[]): Promise<{ pdf: ArrayBuffer, text: string }> {
     // Generate BibTeX citation text
@@ -24,8 +24,7 @@ async function createCitationPDFWithLatex(uuid: string, size: { width: number, h
 
     // Generate link URL
     const baseUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`;
-    const url = `${baseUrl}/preprint/${uuid}`;
-    const paperUrl = bibTexEntries.url || url;
+    const url = uuid ? `${baseUrl}/preprint/${uuid}` : undefined;
 
     // Get related papers as strings
     const relatedPapersText = similarPreprints ? 
@@ -33,7 +32,7 @@ async function createCitationPDFWithLatex(uuid: string, size: { width: number, h
       [];
 
     // Use the updated generateLatexTex function
-    const latexContent = generateLatexTex(bibAnnotationText, paperUrl, relatedPapersText);
+    const latexContent = generateLatexTex(bibAnnotationText, bibTexEntries.url, url, relatedPapersText);
 
     // Create the complete LaTeX document
     const latexSource = String.raw`
@@ -44,13 +43,14 @@ async function createCitationPDFWithLatex(uuid: string, size: { width: number, h
 \usepackage{tcolorbox}
 \usepackage{xcolor}
 \usepackage{tikz}
+\usepackage{listings}
 \tcbuselibrary{skins,breakable}
 
 % Set paper size
 \geometry{papersize={${size.width}pt,${size.height}pt}, margin=50pt}
 
 \begin{document}
-\thispagestyle{empty}             % no page number
+\pagestyle{empty}             % no page number
 
 ${latexContent}
 
@@ -190,7 +190,7 @@ async function mergePDFs(originalPdfDoc: PDFDocument, citationPdfBytes: ArrayBuf
     return originalPdfDoc;
 }
 
-export async function createBibTexAnnotation(file: PDFDocument, uuid: string, bibTexEntries: {
+export async function createBibTexAnnotation(file: PDFDocument, uuid: string | undefined, bibTexEntries: {
     [id: string]: string
 }, similarPreprints?: any[]): Promise<{ text: string; bytes: Uint8Array; }> {
 

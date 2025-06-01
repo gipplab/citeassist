@@ -83,8 +83,9 @@ ${citeAssistLink ? String.raw`\textbf{\sffamily CiteAssist} &
 \begin{center}
   {\fontsize{22}{26}\selectfont\sffamily\bfseries \textcolor{PrimaryDark}{CiteAssist}}\\[0.2em]
   {\Large\sffamily\scshape \textcolor{TextMuted}{Citation Sheet}}\\[0.8em]
-  {\small\sffamily Generated with \href{https://citeassist.uni-goettingen.de/}{\textcolor{Primary}{\texttt{citeassist.uni-goettingen.de}}}}
-\end{center}
+  {\small\sffamily Generated with \href{https://citeassist.uni-goettingen.de/}{\textcolor{Primary}{\texttt{citeassist.uni-goettingen.de}}}
+\IfPackageLoadedTF{annotation}{\CiteAssistCite{}}{}
+  }\end{center}
 
 \begin{center}
 \vspace{1em}

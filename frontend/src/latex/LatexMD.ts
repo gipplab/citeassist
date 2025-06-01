@@ -1,4 +1,4 @@
-export const latexMD = `USING ANNOTATION.STY AND ANNOTATION.TEX IN LATEX
+export const latexMD = String.raw`USING ANNOTATION.STY AND ANNOTATION.TEX IN LATEX
 ==============================================
 
 OVERVIEW
@@ -17,33 +17,30 @@ STEPS
 1. USING ANNOTATION.STY
    -------------------
    At the beginning of your LaTeX document, include the annotation.sty file by adding 
-   the following line in the preamble (before \\begin{document}):
+   the following line in the preamble (before \begin{document}):
 
-   \\usepackage{annotation}
+   \usepackage{annotation}
+
+    or without attribution
+
+   \usepackage[noautocite]{annotation}
 
 
-2. ADDING THE ANNOTATIONS SECTION
+3. ADDING THE ANNOTATIONS SECTION
    ----------------------------
-   To add the annotations section in your document, use \\input or \\include command
+   To add the annotations section in your document, use \input or \include command
    to include annotation.tex. Typically, this is done at the end of your document:
 
    % ... Your document content ...
    
-   \\input{annotation.tex}
+   \input{annotation.tex}
 
 
-3. ADDING THE ANNOTATIONS BUTTON
+4. ADDING THE ANNOTATIONS BUTTON
    --------------------------
    To add the "Annotations" button to the top right corner of the first page, ideally
-   right after the \\maketitle command, you can use the \\AddAnnotationRef command.
+   right after the \maketitle command, you can use the \AddAnnotationRef command.
 
-   First, ensure you have the tikz and hyperref packages in your preamble:
-
-   \\usepackage{tikz}
-   \\usepackage{hyperref}
-
-   Use this command immediately after \\maketitle:
-
-   \\maketitle
-   \\AddAnnotationRef
+   \maketitle
+   \AddAnnotationRef{}
 `;

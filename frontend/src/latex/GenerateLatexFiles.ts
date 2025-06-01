@@ -21,6 +21,7 @@ export function downloadLatexFiles(annotation: string, link: string | undefined,
     const basicTexContent = generateLatexTex(annotation, link, citeAssistLink, relatedPapers);
     const texText = String.raw`
 \clearpage
+\onecolumn
 \hypertarget{annotation}{}
 \pagestyle{empty}
 ${basicTexContent}

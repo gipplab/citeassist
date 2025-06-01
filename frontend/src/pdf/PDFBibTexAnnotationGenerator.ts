@@ -51,7 +51,7 @@ async function createCitationPDFWithLatex(uuid: string | undefined, size: { widt
 
 \begin{document}
 \pagestyle{empty}             % no page number
-
+\newcommand{\CiteAssistCite}{}
 ${latexContent}
 
 \end{document}`;

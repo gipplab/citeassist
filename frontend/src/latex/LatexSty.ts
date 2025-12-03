@@ -29,8 +29,11 @@ export function generateLatexSty(acronym: string | null) {
 \newcommand{\AddAnnotationRef}{
     \begin{tikzpicture}[remember picture,overlay]
     \node[anchor=north east, inner sep=10pt] at (current page.north east) {
-        \hyperlink{annotation}{
-        \AnnotationImage
+        {
+            \hypersetup{hidelinks}
+            \hyperlink{annotation}{
+            \AnnotationImage
+            }
         }
     };
 
@@ -103,17 +106,17 @@ export function generateLatexSty(acronym: string | null) {
 % -------------------------------------------------------------------
 %                       Auto Citation
 % -------------------------------------------------------------------
-\newcommand*\ai@citekey{kaesberg2024}
-\newif\ifai@autocite
-\ai@autocitetrue                % default = on
+\newcommand*\ca@citekey{kaesberg2024}
+\newif\ifca@autocite
+\ca@autocitetrue                % default = on
 
 %% ---- user option to disable it ------------------------------------
-\DeclareOption{noautocite}{\ai@autocitefalse}
+\DeclareOption{noautocite}{\ca@autocitefalse}
 \ProcessOptions\relax
 
 %% ---- write the .bib file using immediate write (fixed format) -----
 \IfFileExists{citeassist.bib}{}{%
-    \newwrite\ai@bibwrite \immediate\openout\ai@bibwrite=citeassist.bib \immediate\write\ai@bibwrite{@inproceedings{kaesberg2024,
+    \newwrite\ca@bibwrite \immediate\openout\ca@bibwrite=citeassist.bib \immediate\write\ca@bibwrite{@inproceedings{kaesberg2024,
     author={Kaesberg, Lars and Ruas, Terry and Wahle, Jan Philip and Gipp, Bela},
     title={{C}ite{A}ssist: A System for Automated Preprint Citation and {B}ib{T}e{X} Generation},
     address={Bangkok, Thailand},
@@ -124,45 +127,45 @@ export function generateLatexSty(acronym: string | null) {
     url={https://aclanthology.org/2024.sdp-1.10/},
     year={2024},
     month={08}
-}} \immediate\closeout\ai@bibwrite
+}} \immediate\closeout\ca@bibwrite
 }
 
 
 %% ---- Simplified bibliography patching (no space trimming) ---------
-\newcommand*\ai@bibfile{citeassist}
+\newcommand*\ca@bibfile{citeassist}
 
 % Store original command
-\let\ai@origbibliography\bibliography
+\let\ca@origbibliography\bibliography
 
 % Simple string checking without zap@space
-\newcommand*\ai@checkifcontains[2]{%
-    \def\ai@found{false}%
-    \expandafter\ai@checkifcontains@aux\expandafter{#1}{#2}%
+\newcommand*\ca@checkifcontains[2]{%
+    \def\ca@found{false}%
+    \expandafter\ca@checkifcontains@aux\expandafter{#1}{#2}%
 }
 
-\newcommand*\ai@checkifcontains@aux[2]{%
-    \@for\ai@entry:=#1\do{%
-    \ifdefstring{\ai@entry}{#2}{\def\ai@found{true}}{}%
+\newcommand*\ca@checkifcontains@aux[2]{%
+    \@for\ca@entry:=#1\do{%
+    \ifdefstring{\ca@entry}{#2}{\def\ca@found{true}}{}%
     }%
 }
 
 % Enhanced bibliography patching without problematic space trimming
 \renewcommand*\bibliography[1]{%
-    \ifai@autocite
-    \ai@checkifcontains{#1}{\ai@bibfile}%
-    \ifdefstring{\ai@found}{true}{%
-        \ai@origbibliography{#1}%
+    \ifca@autocite
+    \ca@checkifcontains{#1}{\ca@bibfile}%
+    \ifdefstring{\ca@found}{true}{%
+        \ca@origbibliography{#1}%
     }{%
-        \ai@origbibliography{#1,\ai@bibfile}%
+        \ca@origbibliography{#1,\ca@bibfile}%
     }%
     \else
-    \ai@origbibliography{#1}%
+    \ca@origbibliography{#1}%
     \fi
 }
 
 % Handle biblatex
 \AtBeginDocument{%
-    \ifai@autocite
+    \ifca@autocite
     \@ifpackageloaded{biblatex}{%
         \addbibresource{citeassist.bib}%
     }{}%
@@ -171,8 +174,8 @@ export function generateLatexSty(acronym: string | null) {
 
 %% ---- Citation command ------------------------------------------
 \newcommand{\CiteAssistCite}{%
-    \ifai@autocite
-    \\\cite{\ai@citekey}%
+    \ifca@autocite
+    \\\cite{\ca@citekey}%
     \else
     \fi
 }

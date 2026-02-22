@@ -109,12 +109,12 @@ const LandingPage = () => {
             </div>
 
             {/* Navigation */}
-            <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 py-3 px-6">
+            <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-gray-100 py-3 px-6 max-sm:px-4">
                 <div className="max-w-6xl mx-auto flex items-center justify-between">
                     <Link to="/" className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                         CiteAssist
                     </Link>
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-6 max-sm:gap-3">
                         <a href="#features" className="text-gray-600 hover:text-gray-900 transition-colors hidden sm:block">Features</a>
                         <a href="#how-it-works" className="text-gray-600 hover:text-gray-900 transition-colors hidden sm:block">How It Works</a>
                         <a href="#bibtex-tool" className="text-gray-600 hover:text-gray-900 transition-colors hidden sm:block">Quick Generate</a>
@@ -144,50 +144,50 @@ const LandingPage = () => {
                 <div className="absolute inset-0 opacity-30" style={{
                     backgroundImage: 'radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.1) 0%, transparent 50%)'
                 }} />
-                <div className="relative max-w-5xl mx-auto px-6 pt-20 pb-24 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-8">
+                <div className="relative max-w-5xl mx-auto px-6 pt-20 pb-24 max-sm:px-5 max-sm:pt-12 max-sm:pb-16 text-center">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-8 max-sm:mb-6">
                         <Zap size={14} />
                         Automated Academic Citations
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 mb-6 leading-tight tracking-tight">
+                    <h1 className="text-5xl md:text-6xl max-sm:text-3xl font-extrabold text-gray-900 mb-6 max-sm:mb-4 leading-tight tracking-tight">
                         Generate BibTeX entries
                         <br />
                         <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                             effortlessly
                         </span>
                     </h1>
-                    <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+                    <p className="text-lg md:text-xl max-sm:text-base text-gray-600 max-w-2xl mx-auto mb-10 max-sm:mb-8 leading-relaxed">
                         Upload your PDF and CiteAssist will extract metadata, generate BibTeX entries,
                         annotate your paper, and help you discover related research.
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <Link to="/app">
-                            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-6 rounded-xl text-lg font-semibold shadow-xl shadow-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/30 transition-all group">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-sm:gap-3">
+                        <Link to="/app" className="w-full sm:w-auto">
+                            <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-6 rounded-xl text-lg font-semibold shadow-xl shadow-blue-500/20 hover:shadow-2xl hover:shadow-blue-500/30 transition-all group">
                                 Get Started
                                 <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
                             </Button>
                         </Link>
-                        <a href="#bibtex-tool">
-                            <Button variant="outline" className="px-8 py-6 rounded-xl text-lg font-semibold border-2 hover:bg-gray-50 transition-all group">
+                        <a href="#bibtex-tool" className="w-full sm:w-auto">
+                            <Button variant="outline" className="w-full sm:w-auto px-8 py-6 rounded-xl text-lg font-semibold border-2 hover:bg-gray-50 transition-all group">
                                 <Code2 size={20} className="mr-2" />
                                 Quick BibTeX
                                 <ChevronDown size={16} className="ml-1 group-hover:translate-y-0.5 transition-transform" />
                             </Button>
                         </a>
                     </div>
-                    <div className="mt-8 text-sm text-gray-500">
+                    <div className="mt-8 max-sm:mt-6 text-sm text-gray-500">
                         No registration required &middot; Free for academic use
                     </div>
                 </div>
             </section>
 
             {/* Features */}
-            <section id="features" className="py-16 px-6 bg-gray-50">
+            <section id="features" className="py-16 px-6 max-sm:py-12 max-sm:px-5 bg-gray-50">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                    <h2 className="text-2xl max-sm:text-xl font-bold text-gray-900 mb-6 max-sm:mb-5 text-center">
                         Everything you need for academic citations
                     </h2>
-                    <div className="grid grid-cols-3 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-sm:gap-4">
                         {features.map((feature, index) => (
                             <div
                                 key={index}
@@ -207,12 +207,12 @@ const LandingPage = () => {
             </section>
 
             {/* How it works */}
-            <section id="how-it-works" className="py-16 px-6 bg-white">
+            <section id="how-it-works" className="py-16 px-6 max-sm:py-12 max-sm:px-5 bg-white">
                 <div className="max-w-4xl mx-auto">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
+                    <h2 className="text-2xl max-sm:text-xl font-bold text-gray-900 mb-6 max-sm:mb-5 text-center">
                         How it works
                     </h2>
-                    <div className="flex items-stretch justify-center gap-3 mb-8">
+                    <div className="flex flex-col sm:flex-row sm:items-stretch justify-center gap-3 mb-8">
                         {steps.map((step, index) => (
                             <React.Fragment key={index}>
                                 <div className="flex items-center gap-3 px-5 py-4 rounded-xl bg-gray-50 border border-gray-100">
@@ -225,13 +225,13 @@ const LandingPage = () => {
                                     </div>
                                 </div>
                                 {index < steps.length - 1 && (
-                                    <ArrowRight size={16} className="text-gray-300 flex-shrink-0 self-center" />
+                                    <ArrowRight size={16} className="text-gray-300 flex-shrink-0 self-center hidden sm:block" />
                                 )}
                             </React.Fragment>
                         ))}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-sm:gap-4">
                         <div className="flex items-start gap-3.5 p-5 rounded-xl bg-gray-50 border border-gray-100">
                             <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
                                 <Upload size={18} className="text-blue-600" />
@@ -276,22 +276,22 @@ const LandingPage = () => {
             </section>
 
             {/* BibTeX Quick Generate */}
-            <section id="bibtex-tool" className="py-16 px-6 bg-gray-50">
+            <section id="bibtex-tool" className="py-16 px-6 max-sm:py-12 max-sm:px-5 bg-gray-50">
                 <div className="max-w-3xl mx-auto">
                     <div className="text-center mb-6">
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-3">
                             <Code2 size={14} />
                             Quick Tool
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                        <h2 className="text-2xl max-sm:text-xl font-bold text-gray-900 mb-2">
                             Generate LaTeX files from BibTeX
                         </h2>
-                        <p className="text-gray-600 max-w-lg mx-auto">
+                        <p className="text-gray-600 max-sm:text-sm max-w-lg mx-auto">
                             Paste a BibTeX entry below to instantly generate LaTeX citation files.
                             No PDF upload needed.
                         </p>
                     </div>
-                    <div className="bg-gray-50 rounded-2xl border border-gray-200 p-8">
+                    <div className="bg-gray-50 rounded-2xl border border-gray-200 p-8 max-sm:p-5">
                         <Textarea
                             placeholder={`@article{example2024,\n  author={Author, First and Author, Second},\n  title={Your Paper Title},\n  journal={Journal Name},\n  year={2024}\n}`}
                             rows={8}
@@ -329,10 +329,10 @@ const LandingPage = () => {
             </section>
 
             {/* Citation Section */}
-            <section id="citation" className="py-16 px-6 bg-white">
+            <section id="citation" className="py-16 px-6 max-sm:py-12 max-sm:px-5 bg-white">
                 <div className="max-w-3xl mx-auto">
                     <div className="text-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
+                        <h2 className="text-2xl max-sm:text-xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                             <Quote size={22} className="text-blue-600" />
                             Cite CiteAssist
                         </h2>
@@ -340,7 +340,7 @@ const LandingPage = () => {
                             If you use this tool in your research, please cite it:
                         </p>
                     </div>
-                    <div className="bg-gray-50 rounded-2xl border border-gray-200 p-6 shadow-sm">
+                    <div className="bg-gray-50 rounded-2xl border border-gray-200 p-6 max-sm:p-4 shadow-sm">
                         <div className="flex justify-end mb-3">
                             <button
                                 onClick={handleCopyClick}
@@ -354,7 +354,7 @@ const LandingPage = () => {
                                 )}
                             </button>
                         </div>
-                        <pre className="bg-white p-5 rounded-xl border border-gray-100 text-sm overflow-x-auto font-mono text-gray-700 leading-relaxed">
+                        <pre className="bg-white p-5 max-sm:p-3 rounded-xl border border-gray-100 text-sm max-sm:text-xs overflow-x-auto font-mono text-gray-700 leading-relaxed">
 {citationText}
                         </pre>
                     </div>
@@ -362,16 +362,16 @@ const LandingPage = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 px-6 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white">
+            <section className="py-20 px-6 max-sm:py-14 max-sm:px-5 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-700 text-white">
                 <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-2xl md:text-3xl font-bold mb-4">
+                    <h2 className="text-2xl md:text-3xl max-sm:text-xl font-bold mb-4 max-sm:mb-3">
                         Ready to streamline your citations?
                     </h2>
-                    <p className="text-blue-100 mb-6 max-w-lg mx-auto text-lg">
+                    <p className="text-blue-100 mb-6 max-w-lg mx-auto text-lg max-sm:text-base">
                         Upload your PDF and get publication-ready BibTeX entries in seconds.
                     </p>
-                    <Link to="/app">
-                        <Button className="bg-white text-blue-700 hover:bg-blue-50 px-10 py-6 rounded-xl text-lg font-semibold shadow-xl transition-all group">
+                    <Link to="/app" className="inline-block">
+                        <Button className="bg-white text-blue-700 hover:bg-blue-50 px-10 py-6 max-sm:px-8 max-sm:py-5 rounded-xl text-lg max-sm:text-base font-semibold shadow-xl transition-all group">
                             Start Now
                             <ArrowRight size={20} className="ml-2 group-hover:translate-x-1 transition-transform" />
                         </Button>
@@ -380,14 +380,14 @@ const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="bg-gray-900 text-gray-400 py-6 px-6">
-                <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-                    <div className="text-center md:text-left">
+            <footer className="bg-gray-900 text-gray-400 py-6 px-6 max-sm:px-5">
+                <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 max-sm:gap-4">
+                    <div className="text-center sm:text-left">
                         <span className="text-white font-semibold">CiteAssist</span>
                         <span className="mx-2">&middot;</span>
                         <span className="text-sm">University of Göttingen</span>
                     </div>
-                    <div className="flex items-center gap-6 text-sm">
+                    <div className="flex items-center gap-6 max-sm:gap-4 text-sm">
                         <a
                             href="https://github.com/gipplab/preprint_generator"
                             target="_blank"

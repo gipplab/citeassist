@@ -9,13 +9,15 @@ import {PDFInfoForm} from "./pdf/PDFInfoForm";
 import {RelatedPaperInfo, relatedPaperToString} from "./annotation/AnnotationAPI"
 import {v4 as uuidv4} from 'uuid';
 import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "./components/ui/Card";
-import {InfoIcon, RefreshCw, Wifi, WifiOff} from "lucide-react";
+import {InfoIcon, RefreshCw, Code2, Download, AlertTriangle, Check} from "lucide-react";
 import {Alert, AlertDescription} from "./components/ui/Alert";
+import {Textarea} from "./components/ui/Textarea";
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
 import { Link } from 'react-router-dom';
 import { env } from './config';
 import {downloadLatexFiles} from "./latex/GenerateLatexFiles";
+import {parseBibTex} from "./annotation/AnnotationParser";
 import {
     Button,
     CircularProgress
@@ -37,6 +39,9 @@ interface AppState {
     keywords: string[];
     similarPreprints: RelatedPaperInfo[];
     pdfGenerating: boolean;
+    bibtexInput: string;
+    bibtexError: string;
+    bibtexSuccess: boolean;
 }
 
 
@@ -106,7 +111,10 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             bibTexEntries: {},
             keywords: [],
             similarPreprints: [],
-            pdfGenerating: false
+            pdfGenerating: false,
+            bibtexInput: '',
+            bibtexError: '',
+            bibtexSuccess: false,
         };
     }
 
@@ -136,7 +144,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             url: url,
             year: year,
             annotation: annotation,
-            file: file_base64, // Base64 encoded file
+            file: file_base64,
         };
 
         fetch(`${backendURL}/database/storePreprint`, {
@@ -146,9 +154,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             },
             body: JSON.stringify(payload)
         }).then(_ => {
-            // Handle success
         }).catch(_ => {
-            // Handle error
         });
     }
 
@@ -158,10 +164,8 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
     }
 
     componentDidMount() {
-        // Set document title for SEO
         document.title = "CiteAssist - Generate BibTeX Entries for Academic Papers";
-        
-        // Set meta description
+
         let metaDescription = document.querySelector('meta[name="description"]');
         if (!metaDescription) {
             metaDescription = document.createElement('meta');
@@ -169,8 +173,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
             document.head.appendChild(metaDescription);
         }
         metaDescription.setAttribute('content', 'Upload your academic paper and automatically generate BibTeX entries, extract metadata, and find related papers with CiteAssist.');
-        
-        // Set meta keywords
+
         let metaKeywords = document.querySelector('meta[name="keywords"]');
         if (!metaKeywords) {
             metaKeywords = document.createElement('meta');
@@ -180,54 +183,95 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
         metaKeywords.setAttribute('content', 'BibTeX generation, citation tool, academic papers, research, PDF annotation, metadata extraction');
     }
 
+    handleBibtexDownload = () => {
+        this.setState({ bibtexError: '', bibtexSuccess: false });
+
+        if (!this.state.bibtexInput.trim()) {
+            this.setState({ bibtexError: 'Please paste a BibTeX entry first.' });
+            return;
+        }
+
+        const parsed = parseBibTex(this.state.bibtexInput);
+        if (!parsed) {
+            this.setState({ bibtexError: 'Could not parse the BibTeX entry. Please check the format.' });
+            return;
+        }
+
+        const typeEntry = parsed.find(e => e.tag === 'type');
+        const refEntry = parsed.find(e => e.tag === 'ref');
+        const fieldEntries = parsed.filter(e => e.tag !== 'type' && e.tag !== 'ref');
+
+        let annotation = `@${typeEntry?.value || 'misc'}{${refEntry?.value || 'unknown'}`;
+        for (const entry of fieldEntries) {
+            if (entry.value) {
+                annotation += `,\n  ${entry.tag}={${entry.value}}`;
+            }
+        }
+        annotation += "\n}";
+
+        downloadLatexFiles(annotation, undefined, undefined, null, []);
+        this.setState({ bibtexSuccess: true });
+        setTimeout(() => this.setState({ bibtexSuccess: false }), 3000);
+    };
+
     render() {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col">
-            <header className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 font-medium shadow-md">
-                This is a free non-commercial service provided by the <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/80 transition-colors">University of Göttingen</a>.
-            </header>
+            <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #f5f3ff 50%, #faf5ff 100%)' }}>
+                {/* Top Banner */}
+                <header className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center py-2.5 px-4 text-sm font-medium">
+                    Free non-commercial service by the{' '}
+                    <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200 transition-colors">
+                        University of Göttingen
+                    </a>
+                </header>
 
                 {this.state.pdfGenerating && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                        <div className="bg-white p-8 rounded-lg shadow-xl flex flex-col items-center">
-                            <CircularProgress size={60} />
-                            <h3 className="mt-4 text-xl font-medium text-gray-800">Generating PDF...</h3>
-                            <p className="mt-2 text-gray-600">This may take a few moments</p>
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
+                        <div className="bg-white p-10 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm mx-4">
+                            <CircularProgress size={56} sx={{ color: '#4f46e5' }} />
+                            <h3 className="mt-5 text-xl font-semibold text-gray-900">Generating PDF...</h3>
+                            <p className="mt-2 text-gray-500 text-center">This may take a few moments</p>
                         </div>
                     </div>
                 )}
 
-                <div className="min-h-screen flex items-center justify-center overflow-y-auto py-8">
-                    <Card className="w-full max-w-4xl mx-auto bg-white shadow-2xl border border-indigo-100">
-                        <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 p-6 rounded-t-lg">
+                <div className="flex-1 flex items-center justify-center overflow-y-auto py-8 px-4">
+                    <Card className="w-full max-w-4xl mx-auto bg-white shadow-xl shadow-blue-500/5 border border-gray-200/80 rounded-2xl overflow-hidden">
+                        <CardHeader className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8">
                             <CardTitle className="font-bold text-center text-white">
-                                <h1 className="text-3xl"><Link to="/">CiteAssist</Link></h1>
-                                <p className="text-blue-100 text-lg mt-2 font-normal">
+                                <h1 className="text-3xl">
+                                    <Link to="/" className="hover:text-blue-100 transition-colors">CiteAssist</Link>
+                                </h1>
+                                <p className="text-blue-100/90 text-lg mt-2 font-normal">
                                     Generate BibTeX entries and annotate your academic papers
                                 </p>
                             </CardTitle>
                         </CardHeader>
-                        <CardContent className="p-6">
+                        <CardContent className="p-8">
                             {this.state.file && (
-                                <div className="flex justify-between items-center mb-6">
-                                    <Button 
-                                        onClick={() => { this.setState({file: undefined}) }} 
-                                        className="flex items-center gap-2 hover:bg-gray-100"
+                                <div className="flex justify-between items-center mb-6 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                                    <Button
+                                        onClick={() => { this.setState({file: undefined}) }}
+                                        className="flex items-center gap-2"
+                                        size="small"
                                     >
-                                        <RefreshCw size={16}/>
-                                        RESET
+                                        <RefreshCw size={14}/>
+                                        Reset
                                     </Button>
-                                    <div className="px-3 py-1.5 bg-blue-50 text-blue-800 rounded border border-blue-200">
+                                    <div className="px-3 py-1.5 bg-white text-blue-700 rounded-lg border border-blue-200 text-sm font-medium">
                                         {this.state.file.name}
                                     </div>
                                 </div>
                             )}
 
                             {!this.state.file && !this.state.loading ? (
-                                <div className="flex justify-center items-center flex-col py-12">
-                                    <h2 className="text-2xl font-semibold text-gray-800 mb-8 text-center">
+                                <div className="flex justify-center items-center flex-col py-10">
+                                    <h2 className="text-2xl font-semibold text-gray-900 mb-2 text-center">
                                         Upload your academic paper
                                     </h2>
+                                    <p className="text-gray-500 mb-8 text-center">
+                                        Drag & drop a PDF to extract metadata and generate citations
+                                    </p>
                                     <PDFFileUploader handleChange={async (file: File) => {
                                         this.setState({loading: true})
                                         let base64File = await toBase64(file)
@@ -244,12 +288,62 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                             loading: false
                                         })
                                     }}/>
+
+                                    {/* BibTeX Quick Generate */}
+                                    <div className="w-full mt-10">
+                                        <div className="relative flex items-center justify-center my-6">
+                                            <div className="border-t border-gray-200 w-full" />
+                                            <span className="absolute bg-white px-4 text-sm text-gray-400 font-medium">or</span>
+                                        </div>
+                                        <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
+                                            <div className="flex items-center gap-2 mb-4">
+                                                <Code2 size={18} className="text-purple-600" />
+                                                <h3 className="font-semibold text-gray-900">Generate LaTeX from BibTeX</h3>
+                                            </div>
+                                            <p className="text-sm text-gray-500 mb-4">
+                                                Paste a BibTeX entry to instantly download LaTeX citation files. No PDF needed.
+                                            </p>
+                                            <Textarea
+                                                placeholder={`@article{example2024,\n  author={Author, First},\n  title={Paper Title},\n  year={2024}\n}`}
+                                                rows={5}
+                                                value={this.state.bibtexInput}
+                                                onChange={(e) => this.setState({
+                                                    bibtexInput: e.target.value,
+                                                    bibtexError: '',
+                                                    bibtexSuccess: false,
+                                                })}
+                                                className="font-mono text-sm bg-white mb-3"
+                                            />
+                                            {this.state.bibtexError && (
+                                                <Alert variant="destructive" className="mb-3">
+                                                    <AlertTriangle className="h-4 w-4" />
+                                                    <AlertDescription>{this.state.bibtexError}</AlertDescription>
+                                                </Alert>
+                                            )}
+                                            {this.state.bibtexSuccess && (
+                                                <Alert className="mb-3 border-green-200 bg-green-50">
+                                                    <Check className="h-4 w-4 text-green-600" />
+                                                    <AlertDescription className="text-green-800">
+                                                        LaTeX files downloaded!
+                                                    </AlertDescription>
+                                                </Alert>
+                                            )}
+                                            <button
+                                                onClick={this.handleBibtexDownload}
+                                                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all text-sm"
+                                            >
+                                                <Download size={16} />
+                                                Download LaTeX Files
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             ) : null}
 
                             {this.state.loading && (
-                                <div className="flex justify-center items-center h-64">
-                                    <CircularProgress/>
+                                <div className="flex flex-col justify-center items-center h-64">
+                                    <CircularProgress sx={{ color: '#4f46e5' }} />
+                                    <p className="mt-4 text-gray-500">Analyzing your PDF...</p>
                                 </div>
                             )}
 
@@ -260,7 +354,6 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                     }/>
                             )}
 
-
                             {!this.state.apiConnected && (
                                 <Alert variant="destructive" className="mt-6">
                                     <AlertDescription>
@@ -269,34 +362,33 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                 </Alert>
                             )}
                         </CardContent>
-                        <CardFooter className="bg-gray-50 p-4 rounded-b-lg border-t border-gray-200">
-                            <div className="w-full flex justify-between items-center text-sm text-gray-600">
+                        <CardFooter className="bg-gray-50 p-5 border-t border-gray-100">
+                            <div className="w-full flex justify-between items-center text-sm text-gray-500">
                                 <a
                                     href="https://github.com/gipplab/preprint_generator"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-2 hover:text-indigo-600 transition-colors"
+                                    className="flex items-center gap-1.5 hover:text-gray-800 transition-colors"
                                 >
-                                    <GitHubIcon/>
-                                    View on GitHub
+                                    <GitHubIcon fontSize="small" />
+                                    GitHub
                                 </a>
                                 <a
                                     href="https://aclanthology.org/2024.sdp-1.10/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-2 hover:text-indigo-600 transition-colors"
+                                    className="flex items-center gap-1.5 hover:text-gray-800 transition-colors"
                                 >
-                                    <ArticleIcon/>
-                                    View on ACL Anthology
+                                    <ArticleIcon fontSize="small" />
+                                    ACL Anthology
                                 </a>
                                 <Link
                                     to="/impressum"
-                                    className="flex items-center gap-2 hover:text-indigo-600 transition-colors"
+                                    className="flex items-center gap-1.5 hover:text-gray-800 transition-colors"
                                 >
-                                    <InfoIcon/>
+                                    <InfoIcon size={16} />
                                     Impressum
                                 </Link>
-
                             </div>
                         </CardFooter>
                     </Card>
@@ -309,7 +401,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
         [p: string]: string
     }, keywords: string[], similarPreprints: RelatedPaperInfo[], latex = false, upload = false) {
         this.setState({ pdfGenerating: true });
-        
+
         try {
             this.state.file!.file.getCreationDate()
         } catch (e) {
@@ -317,7 +409,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
         }
         const fileBackup = await this.state.file!.file.copy()
         const uuid = uuidv4()
-        
+
         try {
             const {text, bytes} = await createBibTexAnnotation(
                 this.state.file!.file,

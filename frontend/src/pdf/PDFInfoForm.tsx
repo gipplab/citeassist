@@ -11,23 +11,23 @@ import {Label} from '../components/ui/Label';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from '../components/ui/Tabs';
 import {Textarea} from '../components/ui/Textarea';
 import {Alert, AlertDescription, AlertTitle} from '../components/ui/Alert';
-import {AlertTriangle, FileDown, Upload, Plus, X, Asterisk} from 'lucide-react';
+import {AlertTriangle, FileDown, Upload, Plus, X, Asterisk, Shield} from 'lucide-react';
 import {RadioGroup, RadioGroupItem} from '../components/ui/RadioGroup';
 import {Badge} from '../components/ui/Badge';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '../components/ui/Dialog';
 import "../output.css"
 import {Separator} from "../components/ui/Seperator";
 import {parseBibTex} from "../annotation/AnnotationParser";
 import {useMediaQuery} from "react-responsive";
 import {CircularProgress} from "@mui/material";
 
-// const Transition = React.forwardRef(function Transition(
-//     props: TransitionProps & {
-//         children: React.ReactElement<any, any>;
-//     },
-//     ref: React.Ref<unknown>,
-// ) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-// });
 type BibTexEntries = {
     [key: string]: BibTexEntry;
 };
@@ -41,12 +41,12 @@ class RelatedPaper extends React.Component<{
     render() {
         let {title, authors, year, onRemove} = this.props;
         return (
-            <div className="flex items-center justify-between p-3 border rounded-lg mb-2">
-                <div>
-                    <p className="font-medium">{title}</p>
-                    <p className="text-sm text-gray-600">{authors} ({year})</p>
+            <div className="flex items-center justify-between p-3 border border-gray-200 rounded-xl mb-2 bg-white hover:bg-gray-50 transition-colors">
+                <div className="min-w-0 flex-1">
+                    <p className="font-medium text-gray-900 truncate">{title}</p>
+                    <p className="text-sm text-gray-500">{authors} ({year})</p>
                 </div>
-                <Button variant="ghost" size="sm" onClick={onRemove}>
+                <Button variant="ghost" size="sm" onClick={onRemove} className="ml-2 flex-shrink-0">
                     <X className="h-4 w-4"/>
                 </Button>
             </div>
@@ -121,6 +121,8 @@ export function PDFInfoForm(props: {
 
     const [isLoadingRelatedPapers, setIsLoadingRelatedPapers] = useState(false);
     const [isLoadingArxivPaper, setIsLoadingArxivPaper] = useState(false);
+
+    const [showConsentDialog, setShowConsentDialog] = useState(false);
 
     function handleSubmit(upload: boolean) {
         const bibTexEntries: { [id: string]: string } = {}
@@ -285,17 +287,17 @@ export function PDFInfoForm(props: {
 
     return <>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className={`grid w-full  mb-4 bg-cyan-300 ${(isMobile) ? "h-44 grid-rows-5" : "grid-cols-5"}`}>
-                <TabsTrigger value="basic" className="relative">
+            <TabsList className={`grid w-full mb-4 bg-gray-100 rounded-xl p-1 ${(isMobile) ? "h-44 grid-rows-5" : "grid-cols-5"}`}>
+                <TabsTrigger value="basic" className="relative rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                     Basic Info
                     <RequiredBadge/>
                     {(artTypeError || artRefError || artAuthorError || artTitleError) &&
                         <AlertTriangle className="h-4 w-4 text-red-500 ml-0.5"/>}
                 </TabsTrigger>
-                <TabsTrigger value="advanced">Advanced</TabsTrigger>
-                <TabsTrigger value="keywords-related">Keywords & Related</TabsTrigger>
-                <TabsTrigger value="parse">Parse BibTeX</TabsTrigger>
-                <TabsTrigger value="generate" className="relative">
+                <TabsTrigger value="advanced" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Advanced</TabsTrigger>
+                <TabsTrigger value="keywords-related" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Keywords & Related</TabsTrigger>
+                <TabsTrigger value="parse" className="rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">Parse BibTeX</TabsTrigger>
+                <TabsTrigger value="generate" className="relative rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                     Generate
                     <RequiredBadge/>
                 </TabsTrigger>
@@ -333,11 +335,10 @@ export function PDFInfoForm(props: {
                             </SelectContent>
                         </Select>
                         {artTypeError && (
-                            <div className="flex flex-row items-center">
+                            <div className="flex flex-row items-center mt-1 gap-1">
                                 <AlertTriangle className="h-4 w-4 text-red-500"/>
-                                <div className="text-red-500">Please enter a Type</div>
+                                <span className="text-red-500 text-sm">Please select a type</span>
                             </div>
-
                         )}
                     </div>
                     <div>
@@ -354,11 +355,10 @@ export function PDFInfoForm(props: {
                             setArtRefError(false)
                         }}/>
                         {artRefError && (
-                            <div className="flex flex-row items-center">
+                            <div className="flex flex-row items-center mt-1 gap-1">
                                 <AlertTriangle className="h-4 w-4 text-red-500"/>
-                                <div className="text-red-500">Please enter a Reference</div>
+                                <span className="text-red-500 text-sm">Please enter a reference</span>
                             </div>
-
                         )}
                     </div>
                     <div>
@@ -368,11 +368,10 @@ export function PDFInfoForm(props: {
                             setArtTitle(e.target.value)
                         }}/>
                         {artTitleError && (
-                            <div className="flex flex-row items-center">
+                            <div className="flex flex-row items-center mt-1 gap-1">
                                 <AlertTriangle className="h-4 w-4 text-red-500"/>
-                                <div className="text-red-500">Please enter a Title</div>
+                                <span className="text-red-500 text-sm">Please enter a title</span>
                             </div>
-
                         )}
                     </div>
                     <div>
@@ -383,11 +382,10 @@ export function PDFInfoForm(props: {
                                    setArtAuthor(e.target.value)
                                }}/>
                         {artAuthorError && (
-                            <div className="flex flex-row items-center">
+                            <div className="flex flex-row items-center mt-1 gap-1">
                                 <AlertTriangle className="h-4 w-4 text-red-500"/>
-                                <div className="text-red-500">Please enter a Author</div>
+                                <span className="text-red-500 text-sm">Please enter an author</span>
                             </div>
-
                         )}
                     </div>
                     <Button variant="outline" onClick={() => setActiveTab('parse')} className="w-full mt-4">
@@ -402,12 +400,11 @@ export function PDFInfoForm(props: {
             <TabsContent value="advanced">
                 <div className="space-y-4">
                     {entries.map((entry) => {
-                        return (<div>
+                        return (<div key={entry.tag}>
                             <Label htmlFor={entry.tag}>{entry.name}</Label>
                             <Input id={entry.tag} placeholder={`Enter the ${entry.name}`} type={entry.type}
                                    value={entry.value} onChange={e => {
                                 entry.error = false
-                                console.log(isNaN(parseInt(e.target.value)))
                                 setEntries(entries.map((obj) => {
                                     if (entry.type === "number" && !isValidNumber(e.target.value)) {
                                         return obj
@@ -421,12 +418,11 @@ export function PDFInfoForm(props: {
                         </div>)
                     })}
 
-                    {/* Custom Fields Section */}
                     <div className="mt-6">
-                        <h3 className="text-lg font-semibold mb-2">Custom Fields</h3>
+                        <h3 className="text-lg font-semibold mb-2 text-gray-900">Custom Fields</h3>
                         {customFields.map((field, index) => (
                             <div key={index} className="flex items-center space-x-2 mb-2">
-                                <Input value={field.name} readOnly className="w-1/3"/>
+                                <Input value={field.name} readOnly className="w-1/3 bg-gray-50"/>
                                 <Input className="w-2/3" placeholder="Enter value" value={field.value} onChange={e => {
                                     setCustomFields(customFields.map((obj) => {
                                         if (obj.name === field.name) {
@@ -472,7 +468,7 @@ export function PDFInfoForm(props: {
                                 <Badge
                                     key={field}
                                     variant="outline"
-                                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                                    className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
                                     onClick={() => addSuggestedField(field)}
                                 >
                                     {field}
@@ -590,11 +586,11 @@ export function PDFInfoForm(props: {
                     <div>
                         <Label htmlFor="bibtex-input">Paste BibTeX Here</Label>
                         <Textarea id="bibtex-input" placeholder="Paste your BibTeX entry here" rows={10}
-                                  value={bibtexInput} onChange={e => setBibtexInput(e.target.value)}/>
+                                  value={bibtexInput} onChange={e => setBibtexInput(e.target.value)}
+                                  className="font-mono text-sm"/>
                     </div>
                     <Button className="w-full" onClick={() => {
                         let newEntries = parseBibTex(bibtexInput)
-                        console.log(newEntries)
                         if (!newEntries) {
                             return
                         }
@@ -659,31 +655,29 @@ export function PDFInfoForm(props: {
                         </Alert>
                     )}
                     <div>
-                        <Label className="text-base">Select Output Format</Label>
+                        <Label className="text-base font-semibold">Select Output Format</Label>
                         <RadioGroup value={generationType} onValueChange={setGenerationType}
-                                    className="flex flex-col space-y-1 mt-2">
-                            <div className="flex items-center space-x-2">
+                                    className="flex flex-col space-y-2 mt-3">
+                            <div className="flex items-center space-x-2 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
                                 <RadioGroupItem value="pdf" id="pdf"/>
-                                <Label htmlFor="pdf">PDF</Label>
+                                <Label htmlFor="pdf" className="cursor-pointer flex-1">PDF</Label>
                             </div>
-                            <div className="flex items-center space-x-2">
+                            <div className="flex items-center space-x-2 p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer">
                                 <RadioGroupItem value="latex" id="latex"/>
-                                <Label htmlFor="latex">LaTeX</Label>
+                                <Label htmlFor="latex" className="cursor-pointer flex-1">LaTeX</Label>
                             </div>
                         </RadioGroup>
                     </div>
 
-                    <div className="flex flex-col space-y-2">
-                        <Button className="w-full flex items-center justify-center" onClick={() =>
+                    <div className="flex flex-col space-y-3">
+                        <Button className="w-full flex items-center justify-center py-5" onClick={() =>
                             handleSubmit(false)
                         }>
                             <FileDown className="mr-2 h-4 w-4"/> Generate {generationType.toUpperCase()}
                         </Button>
-                        <Button className="w-full flex items-center justify-center" onClick={() => {
-                            console.log("Submit")
-                            handleSubmit(true)
-                        }
-                        }>
+                        <Button variant="outline" className="w-full flex items-center justify-center py-5" onClick={() => {
+                            setShowConsentDialog(true)
+                        }}>
                             <Upload className="mr-2 h-4 w-4"/> Generate and
                             Upload {generationType.toUpperCase()}
                         </Button>
@@ -691,5 +685,49 @@ export function PDFInfoForm(props: {
                 </div>
             </TabsContent>
         </Tabs>
+
+        {/* Data Storage Consent Dialog */}
+        <Dialog open={showConsentDialog} onOpenChange={setShowConsentDialog}>
+            <DialogContent className="sm:max-w-lg">
+                <DialogHeader>
+                    <DialogTitle className="flex items-center gap-2 text-lg">
+                        <Shield className="h-5 w-5 text-blue-600" />
+                        Data Storage Notice
+                    </DialogTitle>
+                    <DialogDescription className="text-left pt-2">
+                        By uploading, your data will be stored on the servers of the University of Göttingen.
+                    </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-3 py-2">
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                        <p className="text-sm text-amber-900 font-medium mb-2">The following data will be stored:</p>
+                        <ul className="text-sm text-amber-800 space-y-1 list-disc list-inside">
+                            <li>Your uploaded PDF document</li>
+                            <li>Paper metadata (title, authors, keywords)</li>
+                            <li>Generated BibTeX entry</li>
+                        </ul>
+                    </div>
+                    <p className="text-sm text-gray-600">
+                        This data will be used to create a publicly accessible page with your annotated paper.
+                        A shareable link will be generated that anyone can access.
+                    </p>
+                    <p className="text-sm text-gray-600">
+                        If you prefer not to store data on our servers, use the <strong>"Generate {generationType.toUpperCase()}"</strong> button
+                        instead to download files locally.
+                    </p>
+                </div>
+                <DialogFooter className="gap-2">
+                    <Button variant="outline" onClick={() => setShowConsentDialog(false)}>
+                        Cancel
+                    </Button>
+                    <Button onClick={() => {
+                        setShowConsentDialog(false);
+                        handleSubmit(true);
+                    }} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                        I Agree, Upload
+                    </Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     </>;
 }

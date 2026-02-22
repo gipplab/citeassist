@@ -100,7 +100,7 @@ export function generateLatexSty(acronym: string | null) {
 
 % Define the related paper item
 \newcommand{\relatedpaper}[1]{
-    \item #1
+    #1
 }
 
 % -------------------------------------------------------------------

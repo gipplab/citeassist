@@ -6,12 +6,13 @@ const fileTypes = ["PDF"];
 
 export function PDFFileUploader(props: { handleChange: (file: any) => Promise<void> }) {
     return (
-        <>
-            <h2 className="text-xl font-semibold mb-4 text-indigo-800">Drag & Drop a preprint PDF to enhance it! </h2>
-            <FileUploader classes="min-h-48 w-80 bg-cyan-100" handleChange={props.handleChange} name="file"
-
-                          types={fileTypes}/>
-
-        </>
+        <div className="w-full max-w-md">
+            <FileUploader
+                classes="min-h-52 w-full rounded-xl border-2 border-dashed border-blue-300 bg-blue-50/50 hover:bg-blue-50 hover:border-blue-400 transition-colors cursor-pointer"
+                handleChange={props.handleChange}
+                name="file"
+                types={fileTypes}
+            />
+        </div>
     )
 }

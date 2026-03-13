@@ -5,7 +5,7 @@ import { Textarea } from "../components/ui/Textarea";
 import { Alert, AlertDescription } from "../components/ui/Alert";
 import {
     ArrowRight, Info as InfoIcon, FileText, Book, Users, Quote, Clipboard, Check,
-    Upload, Download, Search, Zap, ChevronDown, Code2, AlertTriangle
+    Upload, Download, Search, Zap, ChevronDown, Code2, AlertTriangle, Sparkles, Calendar
 } from 'lucide-react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
@@ -405,6 +405,24 @@ const LandingPage = () => {
                         >
                             <ArticleIcon fontSize="small" />
                             ACL Anthology
+                        </a>
+                        <a
+                            href="https://ai-cards.org/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 hover:text-white transition-colors"
+                        >
+                            <Sparkles size={16} />
+                            AI Usage Cards
+                        </a>
+                        <a
+                            href="https://www.conferencedeadlines.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 hover:text-white transition-colors"
+                        >
+                            <Calendar size={16} />
+                            Conference Deadlines
                         </a>
                         <Link to="/impressum" className="flex items-center gap-1.5 hover:text-white transition-colors">
                             <InfoIcon size={16} />

@@ -387,7 +387,7 @@ const LandingPage = () => {
                         <span className="mx-2">&middot;</span>
                         <span className="text-sm">University of Göttingen</span>
                     </div>
-                    <div className="flex items-center gap-6 max-sm:gap-4 text-sm">
+                    <div className="flex flex-wrap justify-center items-center gap-6 max-sm:flex-col max-sm:gap-3 text-sm">
                         <a
                             href="https://github.com/gipplab/preprint_generator"
                             target="_blank"

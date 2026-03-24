@@ -408,6 +408,128 @@ const LandingPage = () => {
                 </div>
             </section>
 
+            {/* Example Output Showcase */}
+            <section className="py-12 px-6 max-sm:py-8 max-sm:px-5 border-t border-warm-border">
+                <div className="max-w-5xl mx-auto">
+                    <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#1a1a2e] mb-2 text-center">
+                        See the <span className="italic text-accent-blue">Result</span>
+                    </h2>
+                    <p className="text-gray-500 text-sm text-center mb-8 max-w-lg mx-auto">
+                        CiteAssist annotates your PDF with a clickable citation button and appends a full citation sheet.
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                        {/* Annotated PDF mockup */}
+                        <div className="flex flex-col">
+                            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Annotated First Page</p>
+                            <div className="bg-white rounded-xl border border-warm-border shadow-sm overflow-hidden flex-1 flex flex-col">
+                                <div className="relative p-6 pb-8 flex-1">
+                                    {/* Citation button overlay */}
+                                    <div className="absolute top-4 right-0">
+                                        <img src="/citation_button.png" alt="Click for Citation & BibTeX" className="w-36 max-sm:w-28" />
+                                    </div>
+                                    {/* Paper content mockup */}
+                                    <div className="mt-10 text-center">
+                                        <h4 className="text-base font-bold text-[#1a1a2e] mb-2 leading-snug">
+                                            CiteAssist: A System for Automated Preprint Citation and BibTeX Generation
+                                        </h4>
+                                        <p className="text-xs text-gray-500 mb-1">
+                                            Lars Benedikt Kaesberg &middot; Terry Ruas &middot; Jan Philip Wahle &middot; Bela Gipp
+                                        </p>
+                                        <p className="text-[10px] text-gray-400 italic mb-4">Georg-August University / Göttingen</p>
+                                    </div>
+                                    <div className="text-xs font-semibold text-[#1a1a2e] text-center mb-2">Abstract</div>
+                                    <div className="space-y-1.5">
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-full" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-full" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-[95%]" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-full" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-[88%]" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-full" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-[72%]" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-full" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-[91%]" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-full" />
+                                        <div className="h-1.5 bg-gray-100 rounded-full w-[65%]" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Citation Sheet mockup */}
+                        <div className="flex flex-col">
+                            <p className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-2">Appended Citation Sheet</p>
+                            <div className="bg-white rounded-xl border border-warm-border shadow-sm overflow-hidden flex-1 flex flex-col">
+                                <div className="p-6 pb-8 flex-1">
+                                    <div className="text-center mb-4">
+                                        <p className="font-serif text-base font-bold text-accent-blue">CiteAssist</p>
+                                        <p className="text-[10px] text-gray-400 uppercase tracking-wider">Citation Sheet</p>
+                                    </div>
+                                    <hr className="border-warm-border mb-4" />
+
+                                    {/* BibTeX Entry */}
+                                    <div className="mb-4">
+                                        <div className="flex items-center gap-1.5 mb-1.5">
+                                            <div className="w-0.5 h-4 bg-accent-blue rounded-full" />
+                                            <p className="text-xs font-semibold text-[#1a1a2e]">BibTeX Entry</p>
+                                        </div>
+                                        <pre className="bg-cream p-2.5 rounded-lg border border-warm-border text-[9px] font-mono text-gray-500 leading-relaxed overflow-hidden">
+{`@inproceedings{kaesberg-etal-2024,
+  author={Kaesberg, Lars and ...},
+  title={CiteAssist: A System...},
+  booktitle={Proc. SDP 2024},
+  year={2024}
+}`}
+                                        </pre>
+                                    </div>
+
+                                    {/* Online Access */}
+                                    <div className="mb-4">
+                                        <div className="flex items-center gap-1.5 mb-1.5">
+                                            <div className="w-0.5 h-4 bg-accent-blue rounded-full" />
+                                            <p className="text-xs font-semibold text-[#1a1a2e]">Online Access</p>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <div className="flex items-center gap-2 text-[10px]">
+                                                <span className="text-gray-400 w-20 flex-shrink-0">Official</span>
+                                                <span className="text-accent-blue underline truncate">aclanthology.org/2024.sdp-1.10/</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-[10px]">
+                                                <span className="text-gray-400 w-20 flex-shrink-0">CiteAssist</span>
+                                                <span className="text-accent-blue underline truncate">citeassist.uni-goettingen.de/...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Related Papers */}
+                                    <div>
+                                        <div className="flex items-center gap-1.5 mb-1.5">
+                                            <div className="w-0.5 h-4 bg-accent-blue rounded-full" />
+                                            <p className="text-xs font-semibold text-[#1a1a2e]">Related Papers</p>
+                                        </div>
+                                        <p className="text-[10px] text-gray-500">
+                                            &bull; Behera et al. <span className="italic">Visual Exploration of Literature Using Connected Papers.</span> 2023.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="text-center mt-6">
+                        <a
+                            href="https://citeassist.uni-goettingen.de/preprint/455b4527-da96-4c79-a434-18bc65646d3b"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-accent-blue hover:underline text-sm font-medium transition-colors"
+                        >
+                            View a live example
+                            <ArrowRight size={13} />
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             {/* Paper Section */}
             <section id="paper" className="py-12 px-6 max-sm:py-8 max-sm:px-5 border-t border-warm-border">
                 <div className="max-w-3xl mx-auto">

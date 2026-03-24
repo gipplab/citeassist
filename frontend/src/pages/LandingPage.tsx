@@ -120,7 +120,7 @@ const LandingPage = () => {
                     <div className="flex items-center gap-5 max-sm:gap-3">
                         <a href="#features" className="text-gray-500 hover:text-[#1a1a2e] transition-colors text-sm max-sm:!hidden">Features</a>
                         <a href="#how-it-works" className="text-gray-500 hover:text-[#1a1a2e] transition-colors text-sm max-sm:!hidden">How It Works</a>
-                        <a href="#bibtex-tool" className="text-gray-500 hover:text-[#1a1a2e] transition-colors text-sm max-sm:!hidden">Quick Generate</a>
+                        <a href="#paper" className="text-gray-500 hover:text-[#1a1a2e] transition-colors text-sm max-sm:!hidden">Cite</a>
                         <a
                             href="https://aclanthology.org/2024.sdp-1.10/"
                             target="_blank"

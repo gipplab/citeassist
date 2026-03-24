@@ -1,13 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
-import {Container, Grid, Paper, Typography, Box, Button, useTheme, useMediaQuery} from '@mui/material';
-import {ArrowLeft, Copy as CopyIcon, FileText} from 'lucide-react';
-import '../EnhancedPreprintGenerator.css';
-import {EnhancedPreprintGeneratorAppBar} from "../EnhancedPreprintGeneratorAppBar";
-import {ThemeProvider} from "@mui/material/styles";
-import darkTheme from "../theme";
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from "../components/ui/Card";
-import GitHubIcon from "@mui/icons-material/GitHub"; // Assuming this CSS file has your styling
+import {useTheme, useMediaQuery} from '@mui/material';
+import {ArrowLeft, Copy as CopyIcon, FileText, Check, Download, ExternalLink} from 'lucide-react';
+import GitHubIcon from "@mui/icons-material/GitHub";
 import { env } from '../config';
 
 const backendURL = env.BACKEND_URL;
@@ -66,112 +61,161 @@ const PreprintViewer = () => {
     }, [preprint]);
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
-            <header className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center py-3 px-4 font-medium shadow-md">
-                This is a free non-commercial service provided by the <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="underline hover:text-white/80 transition-colors">University of Göttingen</a>.
-            </header>
-            
-            <main className="flex-grow container mx-auto py-8 px-4">
-                <Link to="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-6 transition-colors">
-                    <ArrowLeft size={20} />
-                    <span>Back to Home</span>
+        <div className="min-h-screen bg-cream flex flex-col">
+            {/* Banner */}
+            <div className="w-full bg-cream-dark text-gray-500 text-center py-2 px-4 text-sm border-b border-warm-border">
+                A free non-commercial service by the{' '}
+                <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="text-accent-blue hover:underline transition-colors">
+                    University of Göttingen
+                </a>
+            </div>
+
+            {/* Nav */}
+            <nav className="sticky top-0 z-40 bg-cream/90 backdrop-blur-md border-b border-warm-border py-3 px-6 max-sm:px-4">
+                <div className="max-w-6xl mx-auto flex items-center justify-between">
+                    <Link to="/" className="flex items-center gap-2">
+                        <span className="font-serif text-xl font-bold text-[#1a1a2e]">CiteAssist</span>
+                    </Link>
+                    <div className="flex items-center gap-3">
+                        <a
+                            href="https://github.com/gipplab/preprint_generator"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-400 hover:text-[#1a1a2e] transition-colors"
+                            aria-label="GitHub"
+                        >
+                            <GitHubIcon fontSize="small" />
+                        </a>
+                        <Link
+                            to="/app"
+                            className="inline-flex items-center gap-1.5 px-4 py-1.5 border border-accent-blue text-accent-blue text-sm font-medium rounded-full hover:bg-accent-blue hover:text-white transition-all"
+                        >
+                            Open App
+                        </Link>
+                    </div>
+                </div>
+            </nav>
+
+            {/* Main content */}
+            <main className="flex-grow max-w-6xl mx-auto w-full py-8 px-6 max-sm:py-6 max-sm:px-4">
+                <Link to="/" className="inline-flex items-center gap-1.5 text-accent-blue hover:underline text-sm font-medium mb-6 transition-colors">
+                    <ArrowLeft size={16} />
+                    Back to Home
                 </Link>
 
-                <Card className="w-full shadow-xl border border-indigo-100 overflow-hidden">
-                    <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
-                        <h1 className="text-3xl font-bold text-white">
-                            <Link to="/" className="hover:text-blue-100 transition-colors">CiteAssist</Link> | Preprint Viewer
-                        </h1>
-                    </CardHeader>
-                    
-                    {preprint ? (
-                        <CardContent className="p-6">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <div className="space-y-6">
-                                    <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
-                                        <h2 className="text-2xl font-semibold text-gray-800 mb-4">{preprint.title}</h2>
-                                        <div className="space-y-2">
-                                            <p className="text-gray-700">
-                                                <span className="font-medium">Author:</span> {preprint.author}
-                                            </p>
-                                            <p className="text-gray-700">
-                                                <span className="font-medium">Year:</span> {preprint.year}
-                                            </p>
-                                        </div>
+                {preprint ? (
+                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                        {/* Left: Metadata & Citation */}
+                        <div className="lg:col-span-2 space-y-5">
+                            {/* Paper info */}
+                            <div className="bg-white rounded-xl border border-warm-border p-5">
+                                <h1 className="font-serif text-xl font-bold text-[#1a1a2e] mb-3 leading-snug">
+                                    {preprint.title}
+                                </h1>
+                                <div className="space-y-2 mb-4">
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-xs font-medium text-gray-400 uppercase tracking-wide mt-0.5 w-14 flex-shrink-0">Author</span>
+                                        <span className="text-sm text-[#1a1a2e]">{preprint.author}</span>
                                     </div>
-                                    
-                                    <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <h3 className="text-xl font-semibold text-gray-800">Citation</h3>
-                                            <Button 
-                                                onClick={() => copyToClipboard(preprint.annotation)}
-                                                variant="outlined"
-                                                size="small"
-                                                className={`transition-colors ${copied ? 'bg-green-50 text-green-700 border-green-200' : ''}`}
-                                            >
-                                                <CopyIcon size={16} className="mr-2" />
-                                                {copied ? 'Copied!' : 'Copy Citation'}
-                                            </Button>
-                                        </div>
-                                        <div className="bg-gray-50 rounded p-4 font-mono text-sm overflow-auto max-h-80 border border-gray-200">
-                                            <pre className="whitespace-pre-wrap break-all">{preprint.annotation}</pre>
-                                        </div>
+                                    <div className="flex items-start gap-2">
+                                        <span className="text-xs font-medium text-gray-400 uppercase tracking-wide mt-0.5 w-14 flex-shrink-0">Year</span>
+                                        <span className="text-sm text-[#1a1a2e]">{preprint.year}</span>
                                     </div>
                                 </div>
-                                
-                                <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200 flex flex-col h-full">
-                                    <h3 className="text-xl font-semibold text-gray-800 mb-4">PDF Preview</h3>
-                                    <div className="flex-grow bg-gray-100 rounded border border-gray-300 overflow-hidden">
-                                        <iframe
-                                            src={`${backendURL}/preprint/${title}`}
-                                            width="100%"
-                                            height={isMobile ? "300px" : "600px"}
-                                            style={{minHeight: '500px', border: 'none'}}
-                                            title="PDF Viewer"
-                                        ></iframe>
-                                    </div>
+                                <div className="flex gap-2">
+                                    <a
+                                        href={`${backendURL}/preprint/${title}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-accent-blue hover:bg-[#2d4373] text-white rounded-lg text-xs font-medium transition-all"
+                                    >
+                                        <Download size={13} />
+                                        Download PDF
+                                    </a>
+                                    <a
+                                        href={`${backendURL}/preprint/${title}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-warm-border hover:border-accent-blue text-gray-600 hover:text-accent-blue rounded-lg text-xs font-medium transition-all"
+                                    >
+                                        <ExternalLink size={13} />
+                                        Open
+                                    </a>
                                 </div>
                             </div>
-                        </CardContent>
-                    ) : (
-                        <CardContent className="p-6 flex justify-center items-center min-h-[400px]">
-                            <div className="flex flex-col items-center text-gray-500">
-                                <FileText size={48} className="mb-4 text-gray-400" />
-                                <p className="text-xl">Loading preprint information...</p>
+
+                            {/* Citation */}
+                            <div className="bg-white rounded-xl border border-warm-border p-5">
+                                <div className="flex items-center justify-between mb-3">
+                                    <h2 className="text-sm font-semibold text-[#1a1a2e]">BibTeX Citation</h2>
+                                    <button
+                                        onClick={() => copyToClipboard(preprint.annotation)}
+                                        className="flex items-center gap-1.5 px-2.5 py-1 bg-accent-blue-light hover:bg-accent-blue hover:text-white text-accent-blue rounded-lg transition-colors text-xs font-medium"
+                                    >
+                                        {copied ? (
+                                            <><Check size={13} /> Copied!</>
+                                        ) : (
+                                            <><CopyIcon size={13} /> Copy</>
+                                        )}
+                                    </button>
+                                </div>
+                                <pre className="bg-cream p-3 rounded-lg border border-warm-border text-xs overflow-auto max-h-72 font-mono text-gray-600 leading-relaxed whitespace-pre-wrap break-all">
+{preprint.annotation}
+                                </pre>
                             </div>
-                        </CardContent>
-                    )}
-                    
-                    <CardFooter className="bg-gray-50 p-4 border-t border-gray-200">
-                        <div className="w-full flex justify-between items-center text-sm text-gray-600">
-                            <span>© 2024 GippLab</span>
-                            <a
-                                href="https://github.com/gipplab/preprint_generator"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 hover:text-indigo-600 transition-colors"
-                            >
-                                <GitHubIcon fontSize="small" />
-                                View on GitHub
-                            </a>
                         </div>
-                    </CardFooter>
-                </Card>
+
+                        {/* Right: PDF Preview */}
+                        <div className="lg:col-span-3">
+                            <div className="bg-white rounded-xl border border-warm-border overflow-hidden h-full flex flex-col">
+                                <div className="px-5 py-3 border-b border-warm-border bg-cream-dark flex items-center justify-between">
+                                    <div className="flex items-center gap-2">
+                                        <FileText size={15} className="text-accent-blue" />
+                                        <span className="text-sm font-medium text-[#1a1a2e]">PDF Preview</span>
+                                    </div>
+                                </div>
+                                <div className="flex-grow bg-cream">
+                                    <iframe
+                                        src={`${backendURL}/preprint/${title}`}
+                                        width="100%"
+                                        height={isMobile ? "400px" : "100%"}
+                                        style={{minHeight: isMobile ? '400px' : '650px', border: 'none'}}
+                                        title="PDF Viewer"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center min-h-[400px] text-gray-400">
+                        <FileText size={40} className="mb-3" />
+                        <p className="text-base">Loading preprint information...</p>
+                    </div>
+                )}
             </main>
+
+            {/* Footer */}
+            <footer className="bg-[#1a1a2e] text-gray-500 py-4 px-6 max-sm:px-4">
+                <div className="max-w-6xl mx-auto flex items-center justify-between text-sm">
+                    <div>
+                        <span className="text-white font-serif font-bold">CiteAssist</span>
+                        <span className="mx-2 text-gray-600">&middot;</span>
+                        <span className="text-gray-500">University of Göttingen</span>
+                    </div>
+                    <a
+                        href="https://github.com/gipplab/preprint_generator"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 hover:text-white transition-colors"
+                    >
+                        <GitHubIcon fontSize="small" />
+                        GitHub
+                    </a>
+                </div>
+            </footer>
         </div>
     );
 };
-{/*<ThemeProvider theme={darkTheme}>
-            <Box className="App">
-                <EnhancedPreprintGeneratorAppBar file={undefined} apiConnected={true} onClick={undefined}/>
-                <header className={"App-header"} style={{justifyContent: "center"}}>
-                    <Container maxWidth="lg">
-
-                    </Container>
-                </header>
-            </Box>
-        </ThemeProvider>*/
-}
 
 
 export default PreprintViewer;

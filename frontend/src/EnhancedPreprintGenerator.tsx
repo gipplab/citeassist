@@ -216,40 +216,40 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
 
     render() {
         return (
-            <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(135deg, #f0f4ff 0%, #f5f3ff 50%, #faf5ff 100%)' }}>
+            <div className="min-h-screen flex flex-col bg-cream">
                 {/* Top Banner */}
-                <header className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-center py-2.5 px-4 text-sm font-medium">
-                    Free non-commercial service by the{' '}
-                    <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-200 transition-colors">
+                <header className="w-full bg-cream-dark text-gray-500 text-center py-2.5 px-4 text-sm border-b border-warm-border">
+                    A free non-commercial service by the{' '}
+                    <a href="https://uni-goettingen.de/" target="_blank" rel="noopener noreferrer" className="text-accent-blue hover:underline transition-colors">
                         University of Göttingen
                     </a>
                 </header>
 
                 {this.state.pdfGenerating && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-                        <div className="bg-white p-10 rounded-2xl shadow-2xl flex flex-col items-center max-w-sm mx-4">
-                            <CircularProgress size={56} sx={{ color: '#4f46e5' }} />
-                            <h3 className="mt-5 text-xl font-semibold text-gray-900">Generating PDF...</h3>
+                        <div className="bg-white p-10 rounded-xl shadow-lg flex flex-col items-center max-w-sm mx-4 border border-warm-border">
+                            <CircularProgress size={56} sx={{ color: '#3b5998' }} />
+                            <h3 className="mt-5 text-xl font-semibold text-[#1a1a2e]">Generating PDF...</h3>
                             <p className="mt-2 text-gray-500 text-center">This may take a few moments</p>
                         </div>
                     </div>
                 )}
 
                 <div className="flex-1 flex items-center justify-center overflow-y-auto py-8 px-4">
-                    <Card className="w-full max-w-4xl mx-auto bg-white shadow-xl shadow-blue-500/5 border border-gray-200/80 rounded-2xl overflow-hidden">
-                        <CardHeader className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-8">
-                            <CardTitle className="font-bold text-center text-white">
-                                <h1 className="text-3xl">
-                                    <Link to="/" className="hover:text-blue-100 transition-colors">CiteAssist</Link>
+                    <Card className="w-full max-w-4xl mx-auto bg-white shadow-sm border border-warm-border rounded-xl overflow-hidden">
+                        <CardHeader className="bg-white p-8 border-b border-warm-border">
+                            <CardTitle className="font-bold text-center">
+                                <h1 className="text-3xl font-serif text-[#1a1a2e]">
+                                    <Link to="/" className="hover:text-accent-blue transition-colors">CiteAssist</Link>
                                 </h1>
-                                <p className="text-blue-100/90 text-lg mt-2 font-normal">
+                                <p className="text-gray-500 text-lg mt-2 font-normal">
                                     Generate BibTeX entries and annotate your academic papers
                                 </p>
                             </CardTitle>
                         </CardHeader>
                         <CardContent className="p-8">
                             {this.state.file && (
-                                <div className="flex justify-between items-center mb-6 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                                <div className="flex justify-between items-center mb-6 p-3 bg-cream-dark rounded-xl border border-warm-border">
                                     <Button
                                         onClick={() => { this.setState({file: undefined}) }}
                                         className="flex items-center gap-2"
@@ -258,7 +258,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                         <RefreshCw size={14}/>
                                         Reset
                                     </Button>
-                                    <div className="px-3 py-1.5 bg-white text-blue-700 rounded-lg border border-blue-200 text-sm font-medium">
+                                    <div className="px-3 py-1.5 bg-white text-accent-blue rounded-lg border border-warm-border text-sm font-medium">
                                         {this.state.file.name}
                                     </div>
                                 </div>
@@ -266,7 +266,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
 
                             {!this.state.file && !this.state.loading ? (
                                 <div className="flex justify-center items-center flex-col py-10">
-                                    <h2 className="text-2xl font-semibold text-gray-900 mb-2 text-center">
+                                    <h2 className="text-2xl font-semibold text-[#1a1a2e] mb-2 text-center">
                                         Upload your academic paper
                                     </h2>
                                     <p className="text-gray-500 mb-8 text-center">
@@ -292,13 +292,13 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                     {/* BibTeX Quick Generate */}
                                     <div className="w-full mt-10">
                                         <div className="relative flex items-center justify-center my-6">
-                                            <div className="border-t border-gray-200 w-full" />
+                                            <div className="border-t border-warm-border w-full" />
                                             <span className="absolute bg-white px-4 text-sm text-gray-400 font-medium">or</span>
                                         </div>
-                                        <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
+                                        <div className="bg-cream rounded-xl border border-warm-border p-6">
                                             <div className="flex items-center gap-2 mb-4">
-                                                <Code2 size={18} className="text-purple-600" />
-                                                <h3 className="font-semibold text-gray-900">Generate LaTeX from BibTeX</h3>
+                                                <Code2 size={18} className="text-accent-blue" />
+                                                <h3 className="font-semibold text-[#1a1a2e]">Generate LaTeX from BibTeX</h3>
                                             </div>
                                             <p className="text-sm text-gray-500 mb-4">
                                                 Paste a BibTeX entry to instantly download LaTeX citation files. No PDF needed.
@@ -330,7 +330,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                             )}
                                             <button
                                                 onClick={this.handleBibtexDownload}
-                                                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-blue-500/20 transition-all text-sm"
+                                                className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-accent-blue text-white rounded-lg font-medium hover:bg-[#2d4373] transition-all text-sm"
                                             >
                                                 <Download size={16} />
                                                 Download LaTeX Files
@@ -342,7 +342,7 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
 
                             {this.state.loading && (
                                 <div className="flex flex-col justify-center items-center h-64">
-                                    <CircularProgress sx={{ color: '#4f46e5' }} />
+                                    <CircularProgress sx={{ color: '#3b5998' }} />
                                     <p className="mt-4 text-gray-500">Analyzing your PDF...</p>
                                 </div>
                             )}
@@ -362,13 +362,13 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                 </Alert>
                             )}
                         </CardContent>
-                        <CardFooter className="bg-gray-50 p-5 border-t border-gray-100">
+                        <CardFooter className="bg-cream p-5 border-t border-warm-border">
                             <div className="w-full flex justify-between items-center text-sm text-gray-500">
                                 <a
                                     href="https://github.com/gipplab/preprint_generator"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 hover:text-gray-800 transition-colors"
+                                    className="flex items-center gap-1.5 hover:text-[#1a1a2e] transition-colors"
                                 >
                                     <GitHubIcon fontSize="small" />
                                     GitHub
@@ -377,14 +377,14 @@ class EnhancedPreprintGenerator extends Component<AppProps, AppState> {
                                     href="https://aclanthology.org/2024.sdp-1.10/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 hover:text-gray-800 transition-colors"
+                                    className="flex items-center gap-1.5 hover:text-[#1a1a2e] transition-colors"
                                 >
                                     <ArticleIcon fontSize="small" />
                                     ACL Anthology
                                 </a>
                                 <Link
                                     to="/impressum"
-                                    className="flex items-center gap-1.5 hover:text-gray-800 transition-colors"
+                                    className="flex items-center gap-1.5 hover:text-[#1a1a2e] transition-colors"
                                 >
                                     <InfoIcon size={16} />
                                     Impressum

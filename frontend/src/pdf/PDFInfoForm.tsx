@@ -22,7 +22,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from '../components/ui/Dialog';
-import "../output.css"
+// output.css removed - using JIT-compiled Tailwind instead
 import {Separator} from "../components/ui/Seperator";
 import {parseBibTex} from "../annotation/AnnotationParser";
 import {useMediaQuery} from "react-responsive";
@@ -287,7 +287,7 @@ export function PDFInfoForm(props: {
 
     return <>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className={`grid w-full mb-4 bg-gray-100 rounded-xl p-1 ${(isMobile) ? "h-44 grid-rows-5" : "grid-cols-5"}`}>
+            <TabsList className={`grid w-full mb-4 bg-cream-dark rounded-xl p-1 ${(isMobile) ? "h-44 grid-rows-5" : "grid-cols-5"}`}>
                 <TabsTrigger value="basic" className="relative rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm">
                     Basic Info
                     <RequiredBadge/>
@@ -723,7 +723,7 @@ export function PDFInfoForm(props: {
                     <Button onClick={() => {
                         setShowConsentDialog(false);
                         handleSubmit(true);
-                    }} className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
+                    }} className="bg-accent-blue hover:bg-[#2d4373] text-white">
                         I Agree, Upload
                     </Button>
                 </DialogFooter>

@@ -131,13 +131,9 @@ export function generateLatexSty(acronym: string | null) {
 }
 
 
-%% ---- Simplified bibliography patching (no space trimming) ---------
+%% ---- Bibliography wiring: defer to \AtBeginDocument and pick ONE path ----
 \newcommand*\ca@bibfile{citeassist}
 
-% Store original command
-\let\ca@origbibliography\bibliography
-
-% Simple string checking without zap@space
 \newcommand*\ca@checkifcontains[2]{%
     \def\ca@found{false}%
     \expandafter\ca@checkifcontains@aux\expandafter{#1}{#2}%
@@ -149,26 +145,30 @@ export function generateLatexSty(acronym: string | null) {
     }%
 }
 
-% Enhanced bibliography patching without problematic space trimming
-\renewcommand*\bibliography[1]{%
-    \ifca@autocite
+% Top-level wrapper — kept out of the hook to avoid \def parameter doubling.
+% Only \let-swapped into place once we know biblatex isn't loaded.
+\newcommand*\ca@wrappedbibliography[1]{%
     \ca@checkifcontains{#1}{\ca@bibfile}%
     \ifdefstring{\ca@found}{true}{%
         \ca@origbibliography{#1}%
     }{%
         \ca@origbibliography{#1,\ca@bibfile}%
     }%
-    \else
-    \ca@origbibliography{#1}%
-    \fi
 }
 
-% Handle biblatex
-\AtBeginDocument{%
+% Fire at end of preamble: all \usepackage calls have run, so biblatex
+% detection is reliable, and we're still in the preamble where
+% \addbibresource is legal. Picks exactly ONE mechanism per project.
+\AtEndPreamble{%
     \ifca@autocite
     \@ifpackageloaded{biblatex}{%
+        % biblatex project — only register the bib resource
         \addbibresource{citeassist.bib}%
-    }{}%
+    }{%
+        % traditional bibtex / natbib — swap in the wrapped \bibliography
+        \let\ca@origbibliography\bibliography
+        \let\bibliography\ca@wrappedbibliography
+    }%
     \fi
 }
 

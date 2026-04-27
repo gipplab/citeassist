@@ -4,7 +4,26 @@
       "mcp__playwright__browser_navigate",
       "mcp__playwright__browser_take_screenshot",
       "mcp__playwright__browser_resize",
-      "mcp__playwright__browser_evaluate"
+      "mcp__playwright__browser_evaluate",
+      "Bash(mkdir -p biblatex natbib plain)",
+      "Bash(cp annotation.sty biblatex/)",
+      "Bash(cp annotation.sty natbib/)",
+      "Bash(cp annotation.sty plain/)",
+      "Bash(cat)",
+      "Bash(pdflatex -interaction=nonstopmode -halt-on-error main.tex)",
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(rm -rf biblatex natbib plain)",
+      "Bash(node --experimental-strip-types extract.mjs)",
+      "Bash(cp annotation.sty refs.bib __TRACKED_VAR__/)",
+      "Bash(echo \"biblatex pass1 EXIT=$?\")",
+      "Bash(echo \"natbib pass1 EXIT=$?\")",
+      "Bash(echo \"plain pass1 EXIT=$?\")",
+      "Bash(biber main *)",
+      "Bash(echo \"biber EXIT=$?\")",
+      "Bash(echo \"pass2 EXIT=$?\")",
+      "Bash(echo \"pass3 EXIT=$?\")",
+      "Bash(bibtex main *)",
+      "Bash(echo \"bibtex EXIT=$?\")"
     ]
   }
 }

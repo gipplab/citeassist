@@ -16,7 +16,7 @@ STEPS
 
 1. USING ANNOTATION.STY
    -------------------
-   At the beginning of your LaTeX document, include the annotation.sty file by adding 
+   At the beginning of your LaTeX document, include the annotation.sty file by adding
    the following line in the preamble (before \begin{document}):
 
    \usepackage{annotation}
@@ -24,6 +24,13 @@ STEPS
     or without attribution
 
    \usepackage[noautocite]{annotation}
+
+   BIBLIOGRAPHY COMPATIBILITY
+   The package auto-detects whether your project uses biblatex or traditional
+   bibtex/natbib and registers citeassist.bib through the matching mechanism
+   (\addbibresource for biblatex, \bibliography patching otherwise). Only one
+   path is activated, so arXiv submissions won't trip the "multiple bibliography
+   styles" check.
 
 
 3. ADDING THE ANNOTATIONS SECTION

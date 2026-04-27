@@ -6,7 +6,7 @@ export function generateLatexSty(acronym: string | null) {
 % Load required packages
 \RequirePackage{hyperref}
 \RequirePackage{listings}
-\RequirePackage[breakable]{tcolorbox}
+\RequirePackage[breakable,most]{tcolorbox}
 \RequirePackage{tikz}
 
 \newcommand{\AnnotationImage}{

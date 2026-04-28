@@ -23,7 +23,9 @@
       "Bash(echo \"pass2 EXIT=$?\")",
       "Bash(echo \"pass3 EXIT=$?\")",
       "Bash(bibtex main *)",
-      "Bash(echo \"bibtex EXIT=$?\")"
+      "Bash(echo \"bibtex EXIT=$?\")",
+      "Bash(mkdir -p /tmp/citeassist-verify)",
+      "Bash(sed -n '145,180p' annotation.sty)"
     ]
   }
 }

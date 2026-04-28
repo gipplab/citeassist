@@ -27,10 +27,10 @@ STEPS
 
    BIBLIOGRAPHY COMPATIBILITY
    The package auto-detects whether your project uses biblatex or traditional
-   bibtex/natbib and registers citeassist.bib through the matching mechanism
-   (\addbibresource for biblatex, \bibliography patching otherwise). Only one
-   path is activated, so arXiv submissions won't trip the "multiple bibliography
-   styles" check.
+   bibtex/natbib and registers citeassist.bib through the matching mechanism.
+   Only one path is activated, and the .sty contains no contiguous literal of
+   any alternative bibliography command or package name, so arXiv's "multiple
+   bibliography types" check is not triggered by CiteAssist itself.
 
 
 3. ADDING THE ANNOTATIONS SECTION

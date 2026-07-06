@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from "../components/ui/Alert";
 import {
     ArrowRight, Info as InfoIcon, FileText, Book, Users, Clipboard, Check,
     Upload, Download, Search, Zap, AlertTriangle, Sparkles, Calendar,
-    GraduationCap, Eye, Mail
+    GraduationCap, Eye, Mail, Images
 } from 'lucide-react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
@@ -730,6 +730,15 @@ const LandingPage = () => {
                             >
                                 <Mail size={14} />
                                 EmailBot
+                            </a>
+                            <a
+                                href="https://www.swipephotos.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <Images size={14} />
+                                Swipe Photos
                             </a>
                         </div>
                     </div>

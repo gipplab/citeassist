@@ -5,7 +5,8 @@ import { Textarea } from "../components/ui/Textarea";
 import { Alert, AlertDescription } from "../components/ui/Alert";
 import {
     ArrowRight, Info as InfoIcon, FileText, Book, Users, Clipboard, Check,
-    Upload, Download, Search, Zap, AlertTriangle, Sparkles, Calendar
+    Upload, Download, Search, Zap, AlertTriangle, Sparkles, Calendar,
+    GraduationCap, Eye, Mail
 } from 'lucide-react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
@@ -636,53 +637,101 @@ const LandingPage = () => {
 
             {/* Footer */}
             <footer className="bg-[#1a1a2e] text-gray-500 py-6 px-6 max-sm:px-5 border-t border-gray-800">
-                <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="text-center sm:text-left">
-                        <span className="text-white font-serif font-bold">CiteAssist</span>
-                        <span className="mx-2 text-gray-600">&middot;</span>
-                        <span className="text-sm text-gray-500">University of Göttingen</span>
+                <div className="max-w-5xl mx-auto grid grid-cols-4 gap-8 max-sm:grid-cols-2 max-sm:gap-x-6 max-sm:gap-y-8">
+                    {/* Brand */}
+                    <div className="max-sm:col-span-2">
+                        <div className="text-white font-serif font-bold text-base">CiteAssist</div>
+                        <p className="mt-2 text-sm text-gray-500 leading-relaxed">
+                            A free, non-commercial citation &amp; BibTeX tool from the University of Göttingen.
+                        </p>
                     </div>
-                    <div className="flex flex-wrap justify-center items-center gap-5 max-sm:flex-col max-sm:gap-2 text-sm">
-                        <a
-                            href="https://github.com/gipplab/preprint_generator"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 hover:text-white transition-colors"
-                        >
-                            <GitHubIcon fontSize="small" />
-                            GitHub
-                        </a>
-                        <a
-                            href="https://aclanthology.org/2024.sdp-1.10/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 hover:text-white transition-colors"
-                        >
-                            <ArticleIcon fontSize="small" />
-                            ACL Anthology
-                        </a>
-                        <a
-                            href="https://ai-cards.org/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 hover:text-white transition-colors"
-                        >
-                            <Sparkles size={14} />
-                            AI Usage Cards
-                        </a>
-                        <a
-                            href="https://www.conferencedeadlines.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-1.5 hover:text-white transition-colors"
-                        >
-                            <Calendar size={14} />
-                            Conference Deadlines
-                        </a>
-                        <Link to="/impressum" className="flex items-center gap-1.5 hover:text-white transition-colors">
-                            <InfoIcon size={14} />
-                            Impressum
-                        </Link>
+
+                    {/* Project */}
+                    <div>
+                        <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Project</h3>
+                        <div className="flex flex-col gap-2.5 text-sm">
+                            <a
+                                href="https://github.com/gipplab/preprint_generator"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <GitHubIcon fontSize="small" />
+                                GitHub
+                            </a>
+                            <a
+                                href="https://aclanthology.org/2024.sdp-1.10/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <ArticleIcon fontSize="small" />
+                                ACL Anthology
+                            </a>
+                            <Link to="/impressum" className="flex items-center gap-1.5 hover:text-white transition-colors">
+                                <InfoIcon size={14} />
+                                Impressum
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Resources */}
+                    <div>
+                        <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">Resources</h3>
+                        <div className="flex flex-col gap-2.5 text-sm">
+                            <a
+                                href="https://ai-cards.org/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <Sparkles size={14} />
+                                AI Usage Cards
+                            </a>
+                            <a
+                                href="https://www.conferencedeadlines.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <Calendar size={14} />
+                                Conference Deadlines
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* More Tools */}
+                    <div>
+                        <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">More Tools</h3>
+                        <div className="flex flex-col gap-2.5 text-sm">
+                            <a
+                                href="https://checkmythesis.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <GraduationCap size={14} />
+                                Check My Thesis
+                            </a>
+                            <a
+                                href="https://dejavue.app/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <Eye size={14} />
+                                Dejavue
+                            </a>
+                            <a
+                                href="https://emailbot.larskaesberg.de/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <Mail size={14} />
+                                EmailBot
+                            </a>
+                        </div>
                     </div>
                 </div>
             </footer>

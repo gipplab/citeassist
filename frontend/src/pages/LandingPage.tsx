@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from "../components/ui/Alert";
 import {
     ArrowRight, Info as InfoIcon, FileText, Book, Users, Clipboard, Check,
     Upload, Download, Search, Zap, AlertTriangle, Sparkles, Calendar,
-    GraduationCap, Eye, Mail, Images
+    GraduationCap, Eye, Mail, Images, Feather
 } from 'lucide-react';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ArticleIcon from "@mui/icons-material/Article";
@@ -739,6 +739,15 @@ const LandingPage = () => {
                             >
                                 <Images size={14} />
                                 Swipe Photos
+                            </a>
+                            <a
+                                href="https://www.bloatless.app/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 hover:text-white transition-colors"
+                            >
+                                <Feather size={14} />
+                                Bloatless
                             </a>
                         </div>
                     </div>

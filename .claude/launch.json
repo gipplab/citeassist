@@ -6,6 +6,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["react-scripts", "start"],
       "port": 3000,
+      "autoPort": true,
       "cwd": "frontend"
     }
   ]

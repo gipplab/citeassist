@@ -705,13 +705,13 @@ const LandingPage = () => {
                         <h3 className="text-white font-semibold mb-3 text-xs uppercase tracking-wider">More Tools</h3>
                         <div className="flex flex-col gap-2.5 text-sm">
                             <a
-                                href="https://checkmythesis.com/"
+                                href="https://checkyourdraft.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-1.5 hover:text-white transition-colors"
                             >
                                 <GraduationCap size={14} />
-                                Check My Thesis
+                                Check Your Draft
                             </a>
                             <a
                                 href="https://dejavue.app/"
@@ -723,13 +723,13 @@ const LandingPage = () => {
                                 Dejavue
                             </a>
                             <a
-                                href="https://emailbot.larskaesberg.de/"
+                                href="https://getemailverified.com/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-1.5 hover:text-white transition-colors"
                             >
                                 <Mail size={14} />
-                                EmailBot
+                                EmailVerify
                             </a>
                             <a
                                 href="https://www.swipephotos.com/"
